@@ -8,10 +8,14 @@
 
 #include <math.h>
 #include <vector>
+#include "./Eigen/Dense"
 
 float getHanningCoef(int N, int idx);
 int findMaxArrayIdx(float *array, int minIdx, int maxIdx);
 int findClosestIdxInArray(float *array, float value, int minIdx, int maxIdx);
 int findClosestInVector(std::vector<int> vector, float value, int minIdx, int maxIdx);
+float euclidean_dist(std::vector<float>A , std::vector<float>B);
+float mahalanobis_dist(std::vector<float>A , std::vector<float>B);
+float bhattacharya_dist(std::vector<float>A , std::vector<float>B);
 
 #endif //ECE420_LIB_H
