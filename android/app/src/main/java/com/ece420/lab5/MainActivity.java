@@ -41,7 +41,8 @@ public class MainActivity extends Activity
         implements ActivityCompat.OnRequestPermissionsResultCallback {
 
     // UI Variables
-    Button   controlButton;
+    Button   trainButton;
+    Button   identifyButton;
     TextView statusView;
     TextView freq_status_view;
     String  nativeSampleRate;
@@ -61,7 +62,8 @@ public class MainActivity extends Activity
         super.setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         // Google NDK Stuff
-        controlButton = (Button)findViewById((R.id.capture_control_button));
+        trainButton = (Button)findViewById((R.id.train_button));
+        identifyButton = (Button)findViewById((R.id.identify_button));
         statusView = (TextView)findViewById(R.id.statusView);
         queryNativeAudioParameters();
         // initialize native audio system
@@ -75,6 +77,7 @@ public class MainActivity extends Activity
         freq_status_view = (TextView) findViewById(R.id.newFreqStatusText);
         freq_status_view.setText("Desired Output Frequency: 420 Hz");
         // Setup Seekbar and Initialize
+        /*
         SeekBar mSeekbar = (SeekBar) findViewById(R.id.freqSeekBar);
         mSeekbar.setProgress(420);
         writeNewFreq(420);
@@ -90,6 +93,7 @@ public class MainActivity extends Activity
             public void onStartTrackingTouch(SeekBar seekBar) {}
             public void onStopTrackingTouch(SeekBar seekBar) {}
         });
+        */
     }
     @Override
     protected void onDestroy() {
@@ -148,8 +152,8 @@ public class MainActivity extends Activity
             deleteSLBufferQueueAudioPlayer();
         }
         isPlaying = !isPlaying;
-        controlButton.setText(getString((isPlaying == true) ?
-                R.string.StopEcho: R.string.StartEcho));
+        trainButton.setText(getString((isPlaying == true) ?
+                R.string.StopTrain: R.string.StartTrain));
     }
 
     public void onEchoClick(View view) {
@@ -163,6 +167,20 @@ public class MainActivity extends Activity
             return;
         }
         startEcho();
+    }
+    // new code...
+    public void onIdentifyClick(View view) {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) !=
+                PackageManager.PERMISSION_GRANTED) {
+            statusView.setText(getString(R.string.status_record_perm));
+            ActivityCompat.requestPermissions(
+                    this,
+                    new String[] { Manifest.permission.RECORD_AUDIO },
+                    AUDIO_ECHO_REQUEST);
+            return;
+        }
+        //startEcho();
+        statusView.setText("PROPERTY OF DEEPMIND1234");
     }
 
     public void getLowLatencyParameters(View view) {
@@ -188,7 +206,7 @@ public class MainActivity extends Activity
     private void updateNativeAudioUI() {
         if (!supportRecording) {
             statusView.setText(getString(R.string.error_no_mic));
-            controlButton.setEnabled(false);
+            trainButton.setEnabled(false);
             return;
         }
 
@@ -230,7 +248,7 @@ public class MainActivity extends Activity
          * logic in code for async processing of the button listener.
          */
         statusView.setText("RECORD_AUDIO permission granted, touch " +
-                           getString(R.string.StartEcho) + " to begin");
+                           getString(R.string.StartTrain) + " to begin");
 
         // The callback runs on app's thread, so we are safe to resume the action
         startEcho();
