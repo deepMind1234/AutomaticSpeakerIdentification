@@ -10,44 +10,32 @@
     tools:context="com.ece420.lab5.MainActivity">
 
     <Button
-        android:id="@+id/train_button"
+        android:id="@+id/identify_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="358dp"
-        android:onClick="onTrainClick"
-        android:text="@string/StartTrain" />
-
-    <Button
-        android:id="@+id/switch_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginEnd="38dp"
-        android:layout_marginBottom="18dp"
+        android:layout_centerInParent="true"
+        android:layout_marginBottom="348dp"
         android:onClick="onIdentifyClick"
-        android:text="@string/SwitchPage" />
+        android:text="@string/StartIdentify" />
 
     <TextView
         android:id="@+id/statusView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginStart="50dp"
-        android:layout_marginBottom="45dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="29dp"
         android:lines="3"
         android:text="@string/init_status" />
 
     <TextView
-        android:id="@+id/PageTitle_View"
+        android:id="@+id/newFreqStatusText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="38dp"
-        android:text="TRAIN PAGE"
+        android:text="Identify PAGE"
         android:textAppearance="@android:style/TextAppearance.Material.Large" />
 
 </RelativeLayout>

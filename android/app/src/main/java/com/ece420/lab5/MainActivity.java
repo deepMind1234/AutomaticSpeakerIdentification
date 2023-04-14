@@ -42,9 +42,9 @@ public class MainActivity extends Activity
 
     // UI Variables
     Button   trainButton;
-    Button   identifyButton;
+    Button   switchButton;
     TextView statusView;
-    TextView freq_status_view;
+    TextView page_title_view;
     String  nativeSampleRate;
     String  nativeSampleBufSize;
     boolean supportRecording;
@@ -61,12 +61,23 @@ public class MainActivity extends Activity
         setContentView(R.layout.activity_main);
         super.setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
-        // Google NDK Stuff
-        trainButton = (Button)findViewById((R.id.train_button));
-        identifyButton = (Button)findViewById((R.id.identify_button));
+        // define all BUTTONS and VIEWS from .xml vile
         statusView = (TextView)findViewById(R.id.statusView);
+        trainButton = (Button)findViewById((R.id.train_button));
+        switchButton = (Button)findViewById((R.id.switch_button));
+
+        // assign a listener for the switch button !
+        switchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Start your second activity
+                setContentView(R.layout.identify);
+            }
+        });
+
+
+        /* initialize native audio system */
         queryNativeAudioParameters();
-        // initialize native audio system
         updateNativeAudioUI();
         if (supportRecording) {
             // Native Setting: 48k Hz Sampling Frequency and 128 Frame Size
@@ -74,27 +85,12 @@ public class MainActivity extends Activity
         }
 
         // Setup UI
-        freq_status_view = (TextView) findViewById(R.id.newFreqStatusText);
-        freq_status_view.setText("Desired Output Frequency: 420 Hz");
-        // Setup Seekbar and Initialize
-        /*
-        SeekBar mSeekbar = (SeekBar) findViewById(R.id.freqSeekBar);
-        mSeekbar.setProgress(420);
-        writeNewFreq(420);
-        mSeekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener()
-        {
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser)
-            {
-                int newFreq = progress + MIN_FREQ;
-                freq_status_view.setText("Desired Output Frequency: " + Integer.toString(newFreq) + " Hz");
-                writeNewFreq(newFreq);
-            }
+        page_title_view = (TextView) findViewById(R.id.PageTitle_View);
+        page_title_view.setText("Begin Your Training: ");
 
-            public void onStartTrackingTouch(SeekBar seekBar) {}
-            public void onStopTrackingTouch(SeekBar seekBar) {}
-        });
-        */
     }
+
+
     @Override
     protected void onDestroy() {
         if (supportRecording) {
@@ -156,7 +152,7 @@ public class MainActivity extends Activity
                 R.string.StopTrain: R.string.StartTrain));
     }
 
-    public void onEchoClick(View view) {
+    public void onTrainClick(View view) {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) !=
                                                PackageManager.PERMISSION_GRANTED) {
             statusView.setText(getString(R.string.status_record_perm));
@@ -168,7 +164,7 @@ public class MainActivity extends Activity
         }
         startEcho();
     }
-    // new code...
+    /* */
     public void onIdentifyClick(View view) {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) !=
                 PackageManager.PERMISSION_GRANTED) {
@@ -180,7 +176,7 @@ public class MainActivity extends Activity
             return;
         }
         //startEcho();
-        statusView.setText("PROPERTY OF DEEPMIND1234");
+        statusView.setText("statusView: PROPERTY OF DEEPMIND1234");
     }
 
     public void getLowLatencyParameters(View view) {

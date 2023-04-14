@@ -29,6 +29,10 @@ int newEpochIdx = FRAME_SIZE;
 int FREQ_NEW_ANDROID = 300;
 int FREQ_NEW = 300;
 
+
+
+
+
 bool lab5PitchShift(float *bufferIn) {
     // Lab 4 code is condensed into this function
     int periodLen = detectBufferPeriod(bufferIn);
