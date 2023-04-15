@@ -18,6 +18,7 @@ package com.ece420.lab5;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.Manifest;
@@ -42,7 +43,7 @@ public class MainActivity extends Activity
 
     // UI Variables
     Button   trainButton;
-    Button   switchButton;
+    Button   identifyPageButton;
     TextView statusView;
     TextView page_title_view;
     String  nativeSampleRate;
@@ -64,14 +65,14 @@ public class MainActivity extends Activity
         // define all BUTTONS and VIEWS from .xml vile
         statusView = (TextView)findViewById(R.id.statusView);
         trainButton = (Button)findViewById((R.id.train_button));
-        switchButton = (Button)findViewById((R.id.switch_button));
+        identifyPageButton = (Button)findViewById((R.id.identify_page_button));
 
         // assign a listener for the switch button !
-        switchButton.setOnClickListener(new View.OnClickListener() {
+        identifyPageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //Start your second activity
-                setContentView(R.layout.identify);
+                startActivity(new Intent(MainActivity.this, MainActivity2.class));
             }
         });
 
@@ -165,19 +166,6 @@ public class MainActivity extends Activity
         startEcho();
     }
     /* */
-    public void onIdentifyClick(View view) {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) !=
-                PackageManager.PERMISSION_GRANTED) {
-            statusView.setText(getString(R.string.status_record_perm));
-            ActivityCompat.requestPermissions(
-                    this,
-                    new String[] { Manifest.permission.RECORD_AUDIO },
-                    AUDIO_ECHO_REQUEST);
-            return;
-        }
-        //startEcho();
-        statusView.setText("statusView: PROPERTY OF DEEPMIND1234");
-    }
 
     public void getLowLatencyParameters(View view) {
         updateNativeAudioUI();
