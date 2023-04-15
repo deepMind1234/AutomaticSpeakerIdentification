@@ -61,7 +61,7 @@ float euclidean_dist(std::vector<float>A , std::vector<float>B){
     return std::sqrt(dist);
 }
 
-
+/*
 float mahalanobis_dist(std::vector<float>A , std::vector<float>B,Eigen::MatrixXf& covariance_matrix ){
 
     // Convert vectors to Eigen vectors
@@ -74,10 +74,13 @@ float mahalanobis_dist(std::vector<float>A , std::vector<float>B,Eigen::MatrixXf
     return dist;
 }
 
+
 float bhattacharya_dist(std::vector<float>A , std::vector<float>B){
-
+    return
 }
+*/
 
+/*
 double GetCenterFrequency(unsigned int filterBand)
 {
 	double centerFrequency = 0.0f;
@@ -157,7 +160,7 @@ double NormalizationFactor(int NumFilters, int m)
 
 	return normalizationFactor;
 }
-double GetCoefficient(double* spectralData, unsigned int samplingRate, unsigned int NumFilters, unsigned int binSize, unsigned int m)
+double GetCoefficient(double*   , unsigned int samplingRate, unsigned int NumFilters, unsigned int binSize, unsigned int m)
 {
 	double result = 0.0f;
 	double outerSum = 0.0f;
@@ -197,3 +200,4 @@ double GetCoefficient(double* spectralData, unsigned int samplingRate, unsigned 
 
 	return result;
 }
+*/
