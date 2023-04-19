@@ -35,6 +35,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.EditText;
 import android.widget.Toast;
 
 
@@ -46,10 +47,14 @@ public class MainActivity extends Activity
     Button   identifyPageButton;
     TextView statusView;
     TextView page_title_view;
+    TextView textView;
+    TextView speakerView;
+    EditText inputText;
     String  nativeSampleRate;
     String  nativeSampleBufSize;
     boolean supportRecording;
     Boolean isPlaying = false;
+
     // Static Values
     private static final int AUDIO_ECHO_REQUEST = 0;
     private static final int FRAME_SIZE = 1024;
@@ -66,6 +71,9 @@ public class MainActivity extends Activity
         statusView = (TextView)findViewById(R.id.statusView);
         trainButton = (Button)findViewById((R.id.train_button));
         identifyPageButton = (Button)findViewById((R.id.identify_page_button));
+        textView = (TextView)findViewById((R.id.textView));
+        inputText = (EditText)findViewById((R.id.inputText));
+        speakerView = (TextView)findViewById(R.id.speakerView);
 
         // assign a listener for the switch button !
         identifyPageButton.setOnClickListener(new View.OnClickListener() {
@@ -163,6 +171,7 @@ public class MainActivity extends Activity
                     AUDIO_ECHO_REQUEST);
             return;
         }
+        speakerView.setText("Speaker: " + inputText.getText());
         startEcho();
     }
     /* */

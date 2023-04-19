@@ -49,5 +49,37 @@
         android:text="@string/TrainPage"
         android:textAppearance="@android:style/TextAppearance.Material.Large" />
 
+    <EditText
+        android:id="@+id/inputText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="229dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text=""
+        android:textSize="50dp" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="160dp"
+        android:text="Who's speaking?"
+        android:textSize="40dp"/>
+
+    <TextView
+        android:id="@+id/speakerView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="59dp"
+        android:layout_marginBottom="238dp"
+        android:text="Speaker: " />
+
 </RelativeLayout>
 
