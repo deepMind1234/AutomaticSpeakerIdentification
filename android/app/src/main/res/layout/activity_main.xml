@@ -46,7 +46,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="38dp"
-        android:text="TRAIN PAGE"
+        android:text="@string/TrainPage"
         android:textAppearance="@android:style/TextAppearance.Material.Large" />
 
 </RelativeLayout>
