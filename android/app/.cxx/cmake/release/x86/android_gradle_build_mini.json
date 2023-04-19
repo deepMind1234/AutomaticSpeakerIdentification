@@ -1,0 +1,23 @@
+{
+  "buildFiles": [
+    "/Users/seanlhknj/Library/Android/sdk/ndk/25.2.9519653/build/cmake/android-legacy.toolchain.cmake",
+    "/Users/seanlhknj/Documents/ECE 420/FinalProject/android/app/src/main/cpp/ndk-stl-config.cmake",
+    "/Users/seanlhknj/Library/Android/sdk/ndk/25.2.9519653/build/cmake/platforms.cmake",
+    "/Users/seanlhknj/Library/Android/sdk/ndk/25.2.9519653/build/cmake/compiler_id.cmake",
+    "/Users/seanlhknj/Documents/ECE 420/FinalProject/android/app/src/main/cpp/CMakeLists.txt",
+    "/Users/seanlhknj/Library/Android/sdk/ndk/25.2.9519653/build/cmake/android.toolchain.cmake"
+  ],
+  "cleanCommands": [
+    "/Users/seanlhknj/Library/Android/sdk/cmake/3.10.2.4988404/bin/ninja -C \"/Users/seanlhknj/Documents/ECE 420/FinalProject/android/app/.cxx/cmake/release/x86\" clean"
+  ],
+  "buildTargetsCommand": "/Users/seanlhknj/Library/Android/sdk/cmake/3.10.2.4988404/bin/ninja  -C \"/Users/seanlhknj/Documents/ECE 420/FinalProject/android/app/.cxx/cmake/release/x86\" {LIST_OF_TARGETS_TO_BUILD}",
+  "libraries": {
+    "echo-Release-x86": {
+      "artifactName": "echo",
+      "buildCommand": "/Users/seanlhknj/Library/Android/sdk/cmake/3.10.2.4988404/bin/ninja -C \"/Users/seanlhknj/Documents/ECE 420/FinalProject/android/app/.cxx/cmake/release/x86\" echo",
+      "abi": "x86",
+      "output": "/Users/seanlhknj/Documents/ECE 420/FinalProject/android/app/build/intermediates/cmake/release/obj/x86/libecho.so",
+      "runtimeFiles": []
+    }
+  }
+}

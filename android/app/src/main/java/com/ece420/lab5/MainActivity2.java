@@ -211,6 +211,8 @@ public class MainActivity2 extends Activity  {
         System.loadLibrary("echo");
     }
 
+
+
     /*
      * jni function implementations...
      */

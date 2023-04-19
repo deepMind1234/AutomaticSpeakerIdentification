@@ -1,0 +1,213 @@
+{
+  "abi": "X86",
+  "abiPlatformVersion": 23,
+  "buildSettings": {
+    "environmentVariables": []
+  },
+  "cmake": {
+    "cmakeArtifactsBaseFolder": "/Users/seanlhknj/Documents/ECE 420/FinalProject/android/app/.cxx/cmake/release/x86",
+    "cmakeServerLogFile": "/Users/seanlhknj/Documents/ECE 420/FinalProject/android/app/.cxx/cmake/release/x86/cmake_server_log.txt",
+    "cmakeWrappingBaseFolder": "/Users/seanlhknj/Documents/ECE 420/FinalProject/android/app/.cxx/cxx/release/x86",
+    "effectiveConfiguration": {
+      "name": "traditional-android-studio-cmake-environment",
+      "description": "Composite reified CMakeSettings configuration",
+      "generator": "Ninja",
+      "inheritEnvironments": [
+        "ndk"
+      ],
+      "buildRoot": "/Users/seanlhknj/Documents/ECE 420/FinalProject/android/app/.cxx/cmake/release/x86",
+      "cmakeToolchain": "/Users/seanlhknj/Library/Android/sdk/ndk/25.2.9519653/build/cmake/android.toolchain.cmake",
+      "cmakeExecutable": "/Users/seanlhknj/Library/Android/sdk/cmake/3.10.2.4988404/bin/cmake",
+      "variables": [
+        {
+          "name": "CMAKE_FIND_ROOT_PATH",
+          "value": "/Users/seanlhknj/Documents/ECE 420/FinalProject/android/app/.cxx/cmake/release/prefab/x86/prefab"
+        },
+        {
+          "name": "CMAKE_BUILD_TYPE",
+          "value": "Release"
+        },
+        {
+          "name": "CMAKE_TOOLCHAIN_FILE",
+          "value": "/Users/seanlhknj/Library/Android/sdk/ndk/25.2.9519653/build/cmake/android.toolchain.cmake"
+        },
+        {
+          "name": "ANDROID_ABI",
+          "value": "x86"
+        },
+        {
+          "name": "ANDROID_NDK",
+          "value": "/Users/seanlhknj/Library/Android/sdk/ndk/25.2.9519653"
+        },
+        {
+          "name": "ANDROID_PLATFORM",
+          "value": "android-23"
+        },
+        {
+          "name": "CMAKE_ANDROID_ARCH_ABI",
+          "value": "x86"
+        },
+        {
+          "name": "CMAKE_ANDROID_NDK",
+          "value": "/Users/seanlhknj/Library/Android/sdk/ndk/25.2.9519653"
+        },
+        {
+          "name": "CMAKE_EXPORT_COMPILE_COMMANDS",
+          "value": "ON"
+        },
+        {
+          "name": "CMAKE_LIBRARY_OUTPUT_DIRECTORY",
+          "value": "/Users/seanlhknj/Documents/ECE 420/FinalProject/android/app/build/intermediates/cmake/release/obj/x86"
+        },
+        {
+          "name": "CMAKE_MAKE_PROGRAM",
+          "value": "/Users/seanlhknj/Library/Android/sdk/cmake/3.10.2.4988404/bin/ninja"
+        },
+        {
+          "name": "CMAKE_SYSTEM_NAME",
+          "value": "Android"
+        },
+        {
+          "name": "CMAKE_SYSTEM_VERSION",
+          "value": "23"
+        },
+        {
+          "name": "ANDROID_STL",
+          "value": "c++_static"
+        }
+      ]
+    }
+  },
+  "cxxBuildFolder": "/Users/seanlhknj/Documents/ECE 420/FinalProject/android/app/.cxx/cmake/release/x86",
+  "info": {
+    "abi": "X86",
+    "bitness": 32,
+    "deprecated": false,
+    "default": true
+  },
+  "originalCxxBuildFolder": "/Users/seanlhknj/Documents/ECE 420/FinalProject/android/app/.cxx/cmake/release/x86",
+  "variant": {
+    "buildSystemArgumentList": [
+      "-DANDROID_STL\u003dc++_static"
+    ],
+    "buildTargetSet": [],
+    "cFlagsList": [],
+    "cmakeSettingsConfiguration": "android-gradle-plugin-predetermined-name",
+    "cppFlagsList": [],
+    "isDebuggableEnabled": false,
+    "module": {
+      "buildSystem": "CMAKE",
+      "cmake": {
+        "cmakeExe": "/Users/seanlhknj/Library/Android/sdk/cmake/3.10.2.4988404/bin/cmake",
+        "minimumCmakeVersion": "3.10.2",
+        "ninjaExe": "/Users/seanlhknj/Library/Android/sdk/cmake/3.10.2.4988404/bin/ninja"
+      },
+      "cmakeToolchainFile": "/Users/seanlhknj/Library/Android/sdk/ndk/25.2.9519653/build/cmake/android.toolchain.cmake",
+      "cxxFolder": "/Users/seanlhknj/Documents/ECE 420/FinalProject/android/app/.cxx",
+      "gradleModulePathName": ":app",
+      "intermediatesFolder": "/Users/seanlhknj/Documents/ECE 420/FinalProject/android/app/build/intermediates",
+      "makeFile": "/Users/seanlhknj/Documents/ECE 420/FinalProject/android/app/src/main/cpp/CMakeLists.txt",
+      "moduleBuildFile": "/Users/seanlhknj/Documents/ECE 420/FinalProject/android/app/build.gradle",
+      "moduleRootFolder": "/Users/seanlhknj/Documents/ECE 420/FinalProject/android/app",
+      "ndkDefaultAbiList": [
+        "ARMEABI_V7A",
+        "ARM64_V8A",
+        "X86",
+        "X86_64"
+      ],
+      "ndkFolder": "/Users/seanlhknj/Library/Android/sdk/ndk/25.2.9519653",
+      "ndkMetaAbiList": [
+        {
+          "abi": "ARMEABI_V7A",
+          "bitness": 32,
+          "deprecated": false,
+          "default": true
+        },
+        {
+          "abi": "ARM64_V8A",
+          "bitness": 64,
+          "deprecated": false,
+          "default": true
+        },
+        {
+          "abi": "X86",
+          "bitness": 32,
+          "deprecated": false,
+          "default": true
+        },
+        {
+          "abi": "X86_64",
+          "bitness": 64,
+          "deprecated": false,
+          "default": true
+        }
+      ],
+      "ndkMetaPlatforms": {
+        "min": 19,
+        "max": 33,
+        "aliases": {
+          "20": 19,
+          "25": 24,
+          "J": 16,
+          "J-MR1": 17,
+          "J-MR2": 18,
+          "K": 19,
+          "L": 21,
+          "L-MR1": 22,
+          "M": 23,
+          "N": 24,
+          "N-MR1": 24,
+          "O": 26,
+          "O-MR1": 27,
+          "P": 28,
+          "Q": 29,
+          "R": 30,
+          "S": 31,
+          "Sv2": 32,
+          "Tiramisu": 33
+        }
+      },
+      "ndkSupportedAbiList": [
+        "ARMEABI_V7A",
+        "ARM64_V8A",
+        "X86",
+        "X86_64"
+      ],
+      "ndkDefaultStl": "LIBCXX_STATIC",
+      "ndkVersion": "25.2.9519653",
+      "project": {
+        "compilerSettingsCacheFolder": "/Users/seanlhknj/Documents/ECE 420/FinalProject/android/.cxx",
+        "cxxFolder": "/Users/seanlhknj/Documents/ECE 420/FinalProject/android/.cxx",
+        "isBuildOnlyTargetAbiEnabled": true,
+        "isCmakeBuildCohabitationEnabled": false,
+        "isNativeCompilerSettingsCacheEnabled": false,
+        "rootBuildGradleFolder": "/Users/seanlhknj/Documents/ECE 420/FinalProject/android",
+        "sdkFolder": "/Users/seanlhknj/Library/Android/sdk",
+        "isPrefabEnabled": false
+      },
+      "splitsAbiFilterSet": [],
+      "stlSharedObjectMap": {
+        "LIBCXX_SHARED": {
+          "ARMEABI_V7A": "/Users/seanlhknj/Library/Android/sdk/ndk/25.2.9519653/toolchains/llvm/prebuilt/darwin-x86_64/sysroot/usr/lib/arm-linux-androideabi/libc++_shared.so",
+          "ARM64_V8A": "/Users/seanlhknj/Library/Android/sdk/ndk/25.2.9519653/toolchains/llvm/prebuilt/darwin-x86_64/sysroot/usr/lib/aarch64-linux-android/libc++_shared.so",
+          "X86": "/Users/seanlhknj/Library/Android/sdk/ndk/25.2.9519653/toolchains/llvm/prebuilt/darwin-x86_64/sysroot/usr/lib/i686-linux-android/libc++_shared.so",
+          "X86_64": "/Users/seanlhknj/Library/Android/sdk/ndk/25.2.9519653/toolchains/llvm/prebuilt/darwin-x86_64/sysroot/usr/lib/x86_64-linux-android/libc++_shared.so"
+        },
+        "LIBCXX_STATIC": {},
+        "NONE": {},
+        "SYSTEM": {}
+      }
+    },
+    "objFolder": "/Users/seanlhknj/Documents/ECE 420/FinalProject/android/app/build/intermediates/cmake/release/obj",
+    "variantName": "release",
+    "validAbiList": [
+      "ARMEABI_V7A",
+      "ARM64_V8A",
+      "X86",
+      "X86_64"
+    ],
+    "prefabDirectory": "/Users/seanlhknj/Documents/ECE 420/FinalProject/android/app/.cxx/cmake/release/prefab",
+    "prefabPackageDirectoryList": []
+  },
+  "prefabFolder": "/Users/seanlhknj/Documents/ECE 420/FinalProject/android/app/.cxx/cmake/release/prefab/x86"
+}

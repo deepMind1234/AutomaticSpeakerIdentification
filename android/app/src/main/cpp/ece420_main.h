@@ -16,4 +16,5 @@ void overlapAddArray(float *dest, float *src, int startIdx, int len);
 bool lab5PitchShift(float *bufferIn);
 void ece420ProcessFrame(sample_buf *dataBuf);
 
+
 #endif //ECE420_MAIN_H

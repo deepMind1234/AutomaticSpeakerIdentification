@@ -33,7 +33,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -52,6 +51,7 @@ public class MainActivity extends Activity
     EditText inputText;
     String  nativeSampleRate;
     String  nativeSampleBufSize;
+    int nameID;
     boolean supportRecording;
     Boolean isPlaying = false;
 
@@ -135,9 +135,6 @@ public class MainActivity extends Activity
     }
 
     private void startEcho() {
-        if(!supportRecording){
-            return;
-        }
         if (!isPlaying) {
             if(!createSLBufferQueueAudioPlayer()) {
                 statusView.setText(getString(R.string.error_player));
@@ -157,6 +154,10 @@ public class MainActivity extends Activity
             deleteSLBufferQueueAudioPlayer();
         }
         isPlaying = !isPlaying;
+        if(isPlaying)
+        {
+            statusView.setText("Recording");
+        }
         trainButton.setText(getString((isPlaying == true) ?
                 R.string.StopTrain: R.string.StartTrain));
     }
@@ -171,7 +172,9 @@ public class MainActivity extends Activity
                     AUDIO_ECHO_REQUEST);
             return;
         }
-        speakerView.setText("Speaker: " + inputText.getText());
+        nameID = Integer.parseInt(inputText.getText().toString());
+        speakerView.setText("Speaker: " + nameID);
+        writeNameID(nameID);
         startEcho();
     }
     /* */
@@ -247,12 +250,15 @@ public class MainActivity extends Activity
         startEcho();
     }
 
+
     /*
      * Loading our Libs
      */
     static {
         System.loadLibrary("echo");
     }
+
+
 
     /*
      * jni function implementations...
@@ -268,5 +274,5 @@ public class MainActivity extends Activity
     public static native void startPlay();
     public static native void stopPlay();
 
-    public static native void writeNewFreq(int freq);
+    public static native void writeNameID(int nameid);
 }

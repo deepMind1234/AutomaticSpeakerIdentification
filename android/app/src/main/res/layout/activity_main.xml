@@ -68,7 +68,7 @@
         android:layout_alignParentTop="true"
         android:layout_centerInParent="true"
         android:layout_marginTop="160dp"
-        android:text="Who's speaking?"
+        android:text="Enter speaker #"
         android:textSize="40dp"/>
 
     <TextView

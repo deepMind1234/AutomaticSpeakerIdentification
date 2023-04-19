@@ -1,0 +1,25 @@
+# ninja log v5
+1	392	1681873222	CMakeFiles/echo.dir/kiss_fft/kiss_fft.c.o	4b42adbdd645ccc5
+7	490	1681873222	CMakeFiles/echo.dir/ASI_UTILs.cpp.o	36c1f7fd5c5d73b
+1	497	1681873222	CMakeFiles/echo.dir/ece420_lib.cpp.o	f3cdc5993a9ac683
+0	510	1681873222	CMakeFiles/echo.dir/audio_common.cpp.o	6aa9c91781eb7116
+1	542	1681873222	CMakeFiles/echo.dir/debug_utils.cpp.o	6b7c95a991fe97c0
+1	548	1681873222	CMakeFiles/echo.dir/audio_recorder.cpp.o	961036f6b0b70ef0
+0	549	1681873222	CMakeFiles/echo.dir/audio_player.cpp.o	39c94c87e64fb2be
+0	560	1681873222	CMakeFiles/echo.dir/audio_main.cpp.o	86480154f540b608
+2	580	1681873222	CMakeFiles/echo.dir/ece420_main.cpp.o	803d327103e32b7e
+580	691	1681873222	/Users/seanlhknj/Documents/ECE 420/FinalProject/android/app/build/intermediates/cmake/debug/obj/arm64-v8a/libecho.so	85c0bb35454ad2ab
+0	655	1681934501	CMakeFiles/echo.dir/ece420_main.cpp.o	803d327103e32b7e
+655	832	1681934501	/Users/seanlhknj/Documents/ECE 420/FinalProject/android/app/build/intermediates/cmake/debug/obj/arm64-v8a/libecho.so	85c0bb35454ad2ab
+1	700	1681937512	CMakeFiles/echo.dir/ece420_main.cpp.o	803d327103e32b7e
+700	912	1681937513	/Users/seanlhknj/Documents/ECE 420/FinalProject/android/app/build/intermediates/cmake/debug/obj/arm64-v8a/libecho.so	85c0bb35454ad2ab
+1	614	1681938412	CMakeFiles/echo.dir/ece420_main.cpp.o	803d327103e32b7e
+614	801	1681938412	/Users/seanlhknj/Documents/ECE 420/FinalProject/android/app/build/intermediates/cmake/debug/obj/arm64-v8a/libecho.so	85c0bb35454ad2ab
+1	584	1681938893	CMakeFiles/echo.dir/ece420_main.cpp.o	803d327103e32b7e
+584	793	1681938894	/Users/seanlhknj/Documents/ECE 420/FinalProject/android/app/build/intermediates/cmake/debug/obj/arm64-v8a/libecho.so	85c0bb35454ad2ab
+1	558	1681939462	CMakeFiles/echo.dir/audio_main.cpp.o	86480154f540b608
+2	558	1681939462	CMakeFiles/echo.dir/audio_recorder.cpp.o	961036f6b0b70ef0
+2	560	1681939462	CMakeFiles/echo.dir/ece420_main.cpp.o	803d327103e32b7e
+560	733	1681939462	/Users/seanlhknj/Documents/ECE 420/FinalProject/android/app/build/intermediates/cmake/debug/obj/arm64-v8a/libecho.so	85c0bb35454ad2ab
+1	723	1681939858	CMakeFiles/echo.dir/ece420_main.cpp.o	803d327103e32b7e
+723	930	1681939858	/Users/seanlhknj/Documents/ECE 420/FinalProject/android/app/build/intermediates/cmake/debug/obj/arm64-v8a/libecho.so	85c0bb35454ad2ab

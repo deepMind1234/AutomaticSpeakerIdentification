@@ -46,7 +46,29 @@
         android:text="Begin Identifying:"
         android:textAppearance="@android:style/TextAppearance.Material.Large" />
 
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="118dp"
+        android:text="Identified Speaker #:"
+        android:textSize="30dp"/>
 
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="113dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="150dp"
+        android:layout_marginTop="192dp"
+        android:layout_marginEnd="150dp"
+        android:text=""
+        android:textSize="30dp" />
 
 
 </RelativeLayout>

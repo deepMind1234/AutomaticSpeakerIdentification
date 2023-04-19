@@ -21,8 +21,9 @@
 // JNI Function
 extern "C" {
 JNIEXPORT void JNICALL
-Java_com_ece420_lab5_MainActivity_writeNewFreq(JNIEnv *env, jclass, jint);
+Java_com_ece420_lab5_MainActivity_writeNameID(JNIEnv *env, jclass, jint);
 }
+
 
 // Student Variables
 #define EPOCH_PEAK_REGION_WIGGLE 30
@@ -38,10 +39,10 @@ int newEpochIdx = FRAME_SIZE;
 // processing a frame. Thread synchronization, etc. Setting to 300 is only an initializer.
 int FREQ_NEW_ANDROID = 300;
 int FREQ_NEW = 300;
-
-
+int name_ID;
 
 void ece420ProcessFrame(sample_buf *dataBuf) {
+    __android_log_print(ANDROID_LOG_DEBUG, "ID", "%d", name_ID);
     // Keep in mind, we only have 20ms to process each buffer!
     struct timeval start;
     struct timeval end;
@@ -91,7 +92,7 @@ void ece420ProcessFrame(sample_buf *dataBuf) {
             mfcc_result = GetCoefficient(spectrum, 44100, 48, 128, coeff_i);
             printf("%i %f\n", coeff_i, mfcc_result);
             __android_log_print(ANDROID_LOG_DEBUG, "TRACKERS", "%f", mfcc_result);
-    };
+    }
     // The whole kit and kaboodle -- pitch shift
 
     gettimeofday(&end, NULL);
@@ -225,7 +226,13 @@ void overlapAddArray(float *dest, float *src, int startIdx, int len) {
 
 
 JNIEXPORT void JNICALL
-Java_com_ece420_lab5_MainActivity_writeNewFreq(JNIEnv *env, jclass, jint newFreq) {
-    FREQ_NEW_ANDROID = (int) newFreq;
+Java_com_ece420_lab5_MainActivity_writeNameID(JNIEnv *env, jclass, jint newnameid) {
+    name_ID = (int) newnameid;
     return;
+}
+
+JNIEXPORT void JNICALL Java_com_example_MyClass_myFunction(JNIEnv* env, jobject obj, jstring inputString) {
+    const char* inputCString = env->GetStringUTFChars(inputString, 0);
+    // Do something with the input string here...
+    env->ReleaseStringUTFChars(inputString, inputCString);
 }

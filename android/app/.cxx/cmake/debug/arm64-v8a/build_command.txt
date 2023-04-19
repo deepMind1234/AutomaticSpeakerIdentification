@@ -1,0 +1,22 @@
+Executable : /Users/seanlhknj/Library/Android/sdk/cmake/3.10.2.4988404/bin/cmake
+arguments : 
+-H/Users/seanlhknj/Documents/ECE 420/FinalProject/android/app/src/main/cpp
+-DCMAKE_FIND_ROOT_PATH=/Users/seanlhknj/Documents/ECE 420/FinalProject/android/app/.cxx/cmake/debug/prefab/arm64-v8a/prefab
+-DCMAKE_BUILD_TYPE=Debug
+-DCMAKE_TOOLCHAIN_FILE=/Users/seanlhknj/Library/Android/sdk/ndk/25.2.9519653/build/cmake/android.toolchain.cmake
+-DANDROID_ABI=arm64-v8a
+-DANDROID_NDK=/Users/seanlhknj/Library/Android/sdk/ndk/25.2.9519653
+-DANDROID_PLATFORM=android-23
+-DCMAKE_ANDROID_ARCH_ABI=arm64-v8a
+-DCMAKE_ANDROID_NDK=/Users/seanlhknj/Library/Android/sdk/ndk/25.2.9519653
+-DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+-DCMAKE_LIBRARY_OUTPUT_DIRECTORY=/Users/seanlhknj/Documents/ECE 420/FinalProject/android/app/build/intermediates/cmake/debug/obj/arm64-v8a
+-DCMAKE_MAKE_PROGRAM=/Users/seanlhknj/Library/Android/sdk/cmake/3.10.2.4988404/bin/ninja
+-DCMAKE_SYSTEM_NAME=Android
+-DCMAKE_SYSTEM_VERSION=23
+-DANDROID_STL=c++_static
+-B/Users/seanlhknj/Documents/ECE 420/FinalProject/android/app/.cxx/cmake/debug/arm64-v8a
+-GNinja
+jvmArgs : 
+
+Build command args:
