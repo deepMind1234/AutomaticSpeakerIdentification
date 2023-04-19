@@ -7,6 +7,16 @@
 #include "ece420_main.h"
 #include "ece420_lib.h"
 #include "kiss_fft/kiss_fft.h"
+#include <android/log.h>
+
+
+/* apart of Deepak's code */
+#include "ASI_UTILS.h"
+#include "./kiss_fft/kiss_fft.h"
+#define NUM_SAMPLES 8192
+#define FRAME_SIZE 1024
+#define ZP_FACTOR 1024
+
 
 // JNI Function
 extern "C" {
@@ -30,66 +40,6 @@ int FREQ_NEW_ANDROID = 300;
 int FREQ_NEW = 300;
 
 
-
-
-
-bool lab5PitchShift(float *bufferIn) {
-    // Lab 4 code is condensed into this function
-    int periodLen = detectBufferPeriod(bufferIn);
-    float freq = ((float) F_S) / periodLen;
-
-    // If voiced
-    if (periodLen > 0) {
-
-        LOGD("Frequency detected: %f\r\n", freq);
-
-        // Epoch detection - this code is written for you, but the principles will be quizzed
-        std::vector<int> epochLocations;
-        findEpochLocations(epochLocations, bufferIn, periodLen);
-
-        // In this section, you will implement the algorithm given in:
-        // https://courses.engr.illinois.edu/ece420/lab5/lab/#buffer-manipulation-algorithm
-        //
-        // Don't forget about the following functions! API given on the course page.
-        //
-        // getHanningCoef();
-        // findClosestInVector();
-        // overlapAndAdd();
-        // *********************** START YOUR CODE HERE  **************************** //
-    int epoch_idx;
-    int cei_val;
-    int P0=0;
-
-    while(newEpochIdx<2*FRAME_SIZE){
-        //int array = epochLocations;
-        //int value = newEpochIdx;
-        epoch_idx = findClosestInVector(epochLocations, newEpochIdx, 1, epochLocations.size()-1);
-        cei_val = epochLocations[epoch_idx];
-        P0 = int((epochLocations[epoch_idx + 1] - epochLocations[epoch_idx - 1]) / 2);
-
-        float data[2*P0+1];
-        int max_range = 2*P0+1;
-        for(int i = 0; i<max_range; i++){
-            data[i] = getHanningCoef(max_range,i)*bufferIn[cei_val-P0+i];
-        }
-
-    overlapAddArray(bufferOut,data,(newEpochIdx-P0),(2*P0-1));
-    newEpochIdx += int(F_S/FREQ_NEW);
-
-    }
-
-        // ************************ END YOUR CODE HERE  ***************************** //
-    }
-
-    // Final bookkeeping, move your new pointer back, because you'll be
-    // shifting everything back now in your circular buffer
-    newEpochIdx -= FRAME_SIZE;
-    if (newEpochIdx < FRAME_SIZE) {
-        newEpochIdx = FRAME_SIZE;
-    }
-
-    return (periodLen > 0);
-}
 
 void ece420ProcessFrame(sample_buf *dataBuf) {
     // Keep in mind, we only have 20ms to process each buffer!
@@ -115,32 +65,38 @@ void ece420ProcessFrame(sample_buf *dataBuf) {
     for (int i = 0; i < FRAME_SIZE; i++) {
         bufferIn[i + 2 * FRAME_SIZE - 1] = (float) data[i];
     }
+    /* MFCC calculation ! */
+    unsigned int coeff_i;
+    double mfcc_result;
+    //float audio_data[NUM_SAMPLES];
+    kiss_fft_cpx fft_input[NUM_SAMPLES];
+    kiss_fft_cpx fft_output[NUM_SAMPLES];
+    double spectrum[NUM_SAMPLES];
 
+    for (int i = 0; i < NUM_SAMPLES; i++) {
+        fft_input[i].r = dataBuf->buf_[i];
+        fft_input[i].i = 0;
+        printf("%f \n",fft_input[i].r);
+    }
+
+    kiss_fft_cfg cfg = kiss_fft_alloc(NUM_SAMPLES,0,NULL,NULL);
+    kiss_fft(cfg,fft_input,fft_output); // perform fft using the kissfft cfg ds
+
+    for (int i = 0; i < NUM_SAMPLES; i++) {
+        spectrum[i] = (double) fft_output[i].r;
+    };
+
+    for(coeff_i = 0; coeff_i < 13; coeff_i++)
+        {
+            mfcc_result = GetCoefficient(spectrum, 44100, 48, 128, coeff_i);
+            printf("%i %f\n", coeff_i, mfcc_result);
+            __android_log_print(ANDROID_LOG_DEBUG, "TRACKERS", "%f", mfcc_result);
+    };
     // The whole kit and kaboodle -- pitch shift
-    bool isVoiced = lab5PitchShift(bufferIn);
-
-    if (isVoiced) {
-        for (int i = 0; i < FRAME_SIZE; i++) {
-            int16_t newVal = (int16_t) bufferOut[i];
-
-            uint8_t lowByte = (uint8_t) (0x00ff & newVal);
-            uint8_t highByte = (uint8_t) ((0xff00 & newVal) >> 8);
-            dataBuf->buf_[i * 2] = lowByte;
-            dataBuf->buf_[i * 2 + 1] = highByte;
-        }
-    }
-
-    // Very last thing, update your output circular buffer!
-    for (int i = 0; i < 2 * FRAME_SIZE; i++) {
-        bufferOut[i] = bufferOut[i + FRAME_SIZE - 1];
-    }
-
-    for (int i = 0; i < FRAME_SIZE; i++) {
-        bufferOut[i + 2 * FRAME_SIZE - 1] = 0;
-    }
 
     gettimeofday(&end, NULL);
     LOGD("Time delay: %ld us",  ((end.tv_sec * 1000000 + end.tv_usec) - (start.tv_sec * 1000000 + start.tv_usec)));
+
 }
 
 // Returns lag l that maximizes sum(x[n] x[n-k])

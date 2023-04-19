@@ -10,7 +10,8 @@ add_library(echo SHARED
             debug_utils.cpp
             kiss_fft/kiss_fft.c
             ece420_lib.cpp
-            ece420_main.cpp)
+            ece420_main.cpp
+            ASI_UTILs.cpp)
 
 # include libraries needed for hello-jni lib
 target_link_libraries(echo
