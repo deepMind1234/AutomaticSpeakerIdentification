@@ -27,7 +27,7 @@
         android:text="@string/TrainPage" />
 
     <TextView
-        android:id="@+id/statusView"
+        android:id="@+id/statusView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"

@@ -16,6 +16,7 @@
     <string name="prompt_permission">"This sample needs RECORD_AUDIO permission"</string>
 
     <string name="StartIdentify">Start Identifying</string>>
+    <string name="StopIdentify">Stop Identifying</string>>
     <string name="IdentifyPage">Identify</string>>
     <string name="TrainPage">Training Page </string>>
 </resources>

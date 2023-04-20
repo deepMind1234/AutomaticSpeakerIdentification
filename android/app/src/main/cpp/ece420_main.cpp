@@ -9,7 +9,6 @@
 #include "kiss_fft/kiss_fft.h"
 #include <android/log.h>
 
-
 /* apart of Deepak's code */
 #include "ASI_UTILS.h"
 #include "./kiss_fft/kiss_fft.h"
@@ -39,10 +38,22 @@ int newEpochIdx = FRAME_SIZE;
 // processing a frame. Thread synchronization, etc. Setting to 300 is only an initializer.
 int FREQ_NEW_ANDROID = 300;
 int FREQ_NEW = 300;
-int name_ID;
+int name_ID = 0;
+int recording_id = 0;
+
+/* MFCC variables */
+
+// vector of mfcc coefficients per recording. flattened list of all mfcc_coeffs_per_frame
+std::vector<double>mfcc_coeffs_per_recording;
+// vector of matrix mfcc coefficients for every frame
+std::vector<double>mfcc_coeffs_per_frame;
+// map
+std::map <std::pair<int,int>,std::vector<double>> Recordings;
+
 
 void ece420ProcessFrame(sample_buf *dataBuf) {
     __android_log_print(ANDROID_LOG_DEBUG, "ID", "%d", name_ID);
+
     // Keep in mind, we only have 20ms to process each buffer!
     struct timeval start;
     struct timeval end;
@@ -90,9 +101,28 @@ void ece420ProcessFrame(sample_buf *dataBuf) {
     for(coeff_i = 0; coeff_i < 13; coeff_i++)
         {
             mfcc_result = GetCoefficient(spectrum, 44100, 48, 128, coeff_i);
+            mfcc_coeffs_per_frame.push_back(mfcc_result);
             printf("%i %f\n", coeff_i, mfcc_result);
-            __android_log_print(ANDROID_LOG_DEBUG, "TRACKERS", "%f", mfcc_result);
+            //__android_log_print(ANDROID_LOG_DEBUG, "TRACKERS", "%f", mfcc_result);
     }
+
+     __android_log_print(ANDROID_LOG_DEBUG, "Coeffs in this recording: ", "%lu", mfcc_coeffs_per_recording.size());
+
+     std::pair<int,int> recordingKey = std::make_pair(name_ID, recording_id);
+
+     //if the key exists, update its mfcc vector
+     if (Recordings.find(recordingKey) != Recordings.end()) {
+        for(coeff_i = 0; coeff_i < 13; coeff_i++)
+            {
+                Recordings[recordingKey].push_back(mfcc_coeffs_per_frame[coeff_i]);
+            }
+     }
+     //otherwise, insert a new key
+     else{
+        Recordings.insert({ recordingKey , mfcc_coeffs_per_recording});
+     }
+
+     // if the key is old, update map
     // The whole kit and kaboodle !
 
     gettimeofday(&end, NULL);
@@ -101,14 +131,25 @@ void ece420ProcessFrame(sample_buf *dataBuf) {
 }
 
 
+
 JNIEXPORT void JNICALL
 Java_com_ece420_lab5_MainActivity_writeNameID(JNIEnv *env, jclass, jint newnameid) {
     name_ID = (int) newnameid;
+    // clear mfcc vectors
+    mfcc_coeffs_per_frame.clear();
+    mfcc_coeffs_per_recording.clear();
+    recording_id += 1;
+    for (auto it = Recordings.begin(); it != Recordings.end(); ++it) {
+            __android_log_print(ANDROID_LOG_DEBUG, "Map rn: ", "%i & %i: %lu", (it->first).first, (it->first).second, (it->second).size());
+        }
     return;
 }
+
 
 JNIEXPORT void JNICALL Java_com_example_MyClass_myFunction(JNIEnv* env, jobject obj, jstring inputString) {
     const char* inputCString = env->GetStringUTFChars(inputString, 0);
     // Do something with the input string here...
     env->ReleaseStringUTFChars(inputString, inputCString);
+
 }
+

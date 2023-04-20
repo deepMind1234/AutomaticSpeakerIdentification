@@ -36,7 +36,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.EditText;
 import android.widget.Toast;
-
+import java.util.Random ;
 
 public class MainActivity extends Activity
         implements ActivityCompat.OnRequestPermissionsResultCallback {
@@ -134,7 +134,7 @@ public class MainActivity extends Activity
         return super.onOptionsItemSelected(item);
     }
 
-    private void startEcho() {
+    public void startEcho() {
         if (!isPlaying) {
             if(!createSLBufferQueueAudioPlayer()) {
                 statusView.setText(getString(R.string.error_player));
@@ -172,6 +172,7 @@ public class MainActivity extends Activity
                     AUDIO_ECHO_REQUEST);
             return;
         }
+        /* pass nameID and random_recording_id to ece420_main.cpp */
         nameID = Integer.parseInt(inputText.getText().toString());
         speakerView.setText("Speaker: " + nameID);
         writeNameID(nameID);
@@ -184,7 +185,7 @@ public class MainActivity extends Activity
         return;
     }
 
-    private void queryNativeAudioParameters() {
+    public void queryNativeAudioParameters() {
         AudioManager myAudioMgr = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
         nativeSampleRate  =  myAudioMgr.getProperty(AudioManager.PROPERTY_OUTPUT_SAMPLE_RATE);
         nativeSampleBufSize =myAudioMgr.getProperty(AudioManager.PROPERTY_OUTPUT_FRAMES_PER_BUFFER);
@@ -199,7 +200,7 @@ public class MainActivity extends Activity
         }
     }
 
-    private void updateNativeAudioUI() {
+    public void updateNativeAudioUI() {
         if (!supportRecording) {
             statusView.setText(getString(R.string.error_no_mic));
             trainButton.setEnabled(false);
@@ -275,4 +276,6 @@ public class MainActivity extends Activity
     public static native void stopPlay();
 
     public static native void writeNameID(int nameid);
+
+    public static native void writeRecordingID(int recordingid);
 }

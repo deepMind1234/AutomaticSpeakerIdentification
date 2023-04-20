@@ -1,5 +1,6 @@
 #include <math.h>
 #include <vector>
+#include <map>
 
 double GetCoefficient(double* spectralData, unsigned int samplingRate, unsigned int NumFilters, unsigned int binSize, unsigned int m);
 double NormalizationFactor(int NumFilters, int m);
