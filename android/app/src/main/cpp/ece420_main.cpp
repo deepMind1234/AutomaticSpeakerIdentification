@@ -45,13 +45,13 @@ int recording_id = 0;
 
 // vector of mfcc coefficients per recording. flattened list of all mfcc_coeffs_per_frame
 std::vector<double>mfcc_coeffs_per_recording;
-// vector of matrix mfcc coefficients for every frame
-std::vector<double>mfcc_coeffs_per_frame;
 // map
 std::map <std::pair<int,int>,std::vector<double>> Recordings;
 
 
 void ece420ProcessFrame(sample_buf *dataBuf) {
+    // vector of matrix mfcc coefficients for every frame
+    std::vector<double>mfcc_coeffs_per_frame;
     __android_log_print(ANDROID_LOG_DEBUG, "ID", "%d", name_ID);
 
     // Keep in mind, we only have 20ms to process each buffer!
@@ -98,6 +98,8 @@ void ece420ProcessFrame(sample_buf *dataBuf) {
         spectrum[i] = (double) fft_output[i].r;
     };
 
+
+     /*  OUR CODE : */
     for(coeff_i = 0; coeff_i < 13; coeff_i++)
         {
             mfcc_result = GetCoefficient(spectrum, 44100, 48, 128, coeff_i);
@@ -106,7 +108,7 @@ void ece420ProcessFrame(sample_buf *dataBuf) {
             //__android_log_print(ANDROID_LOG_DEBUG, "TRACKERS", "%f", mfcc_result);
     }
 
-     __android_log_print(ANDROID_LOG_DEBUG, "Coeffs in this recording: ", "%lu", mfcc_coeffs_per_recording.size());
+     __android_log_print(ANDROID_LOG_DEBUG, "# of Coeffs in this frame: ", "%lu", mfcc_coeffs_per_frame.size());
 
      std::pair<int,int> recordingKey = std::make_pair(name_ID, recording_id);
 
@@ -119,7 +121,7 @@ void ece420ProcessFrame(sample_buf *dataBuf) {
      }
      //otherwise, insert a new key
      else{
-        Recordings.insert({ recordingKey , mfcc_coeffs_per_recording});
+        Recordings.insert({ recordingKey , mfcc_coeffs_per_frame});
      }
 
      // if the key is old, update map
@@ -135,10 +137,9 @@ void ece420ProcessFrame(sample_buf *dataBuf) {
 JNIEXPORT void JNICALL
 Java_com_ece420_lab5_MainActivity_writeNameID(JNIEnv *env, jclass, jint newnameid) {
     name_ID = (int) newnameid;
-    // clear mfcc vectors
-    mfcc_coeffs_per_frame.clear();
-    mfcc_coeffs_per_recording.clear();
     recording_id += 1;
+    // clear mfcc vectors
+    mfcc_coeffs_per_recording.clear();
     for (auto it = Recordings.begin(); it != Recordings.end(); ++it) {
             __android_log_print(ANDROID_LOG_DEBUG, "Map rn: ", "%i & %i: %lu", (it->first).first, (it->first).second, (it->second).size());
         }
