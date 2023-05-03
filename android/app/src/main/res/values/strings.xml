@@ -17,6 +17,5 @@
 
     <string name="StartIdentify">Start Identifying</string>>
     <string name="StopIdentify">Stop Identifying</string>>
-    <string name="IdentifyPage">Identify</string>>
-    <string name="TrainPage">Training Page </string>>
+    <string name="TrainPage">Training and Identification Page </string>>
 </resources>

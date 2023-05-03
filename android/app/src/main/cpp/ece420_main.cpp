@@ -22,6 +22,10 @@ extern "C" {
 JNIEXPORT void JNICALL
 Java_com_ece420_lab5_MainActivity_writeNameID(JNIEnv *env, jclass, jint);
 }
+extern "C" {
+JNIEXPORT void JNICALL
+Java_com_ece420_lab5_MainActivity_setFlags(JNIEnv *env, jclass, jint);
+}
 
 
 // Student Variables
@@ -40,6 +44,7 @@ int FREQ_NEW_ANDROID = 300;
 int FREQ_NEW = 300;
 int name_ID = 0;
 int recording_id = 0;
+int process_flag;  // 0 if training, 1 if identifying
 
 /* MFCC variables */
 
@@ -145,6 +150,12 @@ Java_com_ece420_lab5_MainActivity_writeNameID(JNIEnv *env, jclass, jint newnamei
         }
     return;
 }
+
+JNIEXPORT void JNICALL
+Java_com_ece420_lab5_MainActivity_setFlags(JNIEnv *env, jclass, jint _process_flag) {
+    process_flag = _process_flag;
+}
+
 
 
 JNIEXPORT void JNICALL Java_com_example_MyClass_myFunction(JNIEnv* env, jobject obj, jstring inputString) {

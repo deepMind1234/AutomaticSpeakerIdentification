@@ -43,7 +43,7 @@ public class MainActivity extends Activity
 
     // UI Variables
     Button   trainButton;
-    Button   identifyPageButton;
+    Button identifyButton;
     TextView statusView;
     TextView page_title_view;
     TextView textView;
@@ -60,6 +60,8 @@ public class MainActivity extends Activity
     private static final int FRAME_SIZE = 1024;
     private static final int MIN_FREQ = 50;
 
+    /* GLOBAL VARIABLES */
+    int process; // flag for what process we are on
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,20 +72,10 @@ public class MainActivity extends Activity
         // define all BUTTONS and VIEWS from .xml vile
         statusView = (TextView)findViewById(R.id.statusView);
         trainButton = (Button)findViewById((R.id.train_button));
-        identifyPageButton = (Button)findViewById((R.id.identify_page_button));
+        identifyButton = (Button)findViewById((R.id.identify_button));
         textView = (TextView)findViewById((R.id.textView));
         inputText = (EditText)findViewById((R.id.inputText));
         speakerView = (TextView)findViewById(R.id.speakerView);
-
-        // assign a listener for the switch button !
-        identifyPageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //Start your second activity
-                startActivity(new Intent(MainActivity.this, MainActivity2.class));
-            }
-        });
-
 
         /* initialize native audio system */
         queryNativeAudioParameters();
@@ -158,8 +150,14 @@ public class MainActivity extends Activity
         {
             statusView.setText("Recording");
         }
-        trainButton.setText(getString((isPlaying == true) ?
-                R.string.StopTrain: R.string.StartTrain));
+        if(process == 0){
+            trainButton.setText(getString((isPlaying) ?
+                    R.string.StopTrain: R.string.StartTrain));
+        }
+        else if(process == 1){
+            identifyButton.setText(getString((isPlaying) ? R.string.StopIdentify: R.string.StartIdentify));
+        }
+
     }
 
     public void onTrainClick(View view) {
@@ -176,6 +174,23 @@ public class MainActivity extends Activity
         nameID = Integer.parseInt(inputText.getText().toString());
         speakerView.setText("Speaker: " + nameID);
         writeNameID(nameID);
+        setFlags(0);
+        process = 0;
+        startEcho();
+    }
+
+    public void onIdentifyClick(View view){
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) !=
+                PackageManager.PERMISSION_GRANTED) {
+            statusView.setText(getString(R.string.status_record_perm));
+            ActivityCompat.requestPermissions(
+                    this,
+                    new String[] { Manifest.permission.RECORD_AUDIO },
+                    AUDIO_ECHO_REQUEST);
+            return;
+        }
+        setFlags(1);
+        process = 1;
         startEcho();
     }
     /* */
@@ -277,5 +292,5 @@ public class MainActivity extends Activity
 
     public static native void writeNameID(int nameid);
 
-    public static native void writeRecordingID(int recordingid);
+    public static native void setFlags(int process);
 }

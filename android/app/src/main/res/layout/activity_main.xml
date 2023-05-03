@@ -15,19 +15,21 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="358dp"
+        android:layout_marginTop="297dp"
         android:onClick="onTrainClick"
         android:text="@string/StartTrain" />
 
     <Button
-        android:id="@+id/identify_page_button"
+        android:id="@+id/identify_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginEnd="38dp"
-        android:layout_marginBottom="18dp"
-        android:text="@string/IdentifyPage" />
+        android:layout_centerHorizontal="true"
+        android:layout_marginEnd="114dp"
+        android:layout_marginBottom="159dp"
+        android:onClick="onIdentifyClick"
+        android:text="@string/StartIdentify" />
 
     <TextView
         android:id="@+id/statusView"
@@ -55,7 +57,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerInParent="true"
-        android:layout_marginTop="229dp"
+        android:layout_marginTop="186dp"
         android:ems="10"
         android:inputType="textPersonName"
         android:text=""
@@ -67,9 +69,9 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerInParent="true"
-        android:layout_marginTop="160dp"
+        android:layout_marginTop="100dp"
         android:text="Enter speaker #"
-        android:textSize="40dp"/>
+        android:textSize="40dp" />
 
     <TextView
         android:id="@+id/speakerView"
@@ -77,8 +79,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginStart="59dp"
-        android:layout_marginBottom="238dp"
+        android:layout_marginStart="41dp"
+        android:layout_marginBottom="252dp"
         android:text="Speaker: " />
 
 </RelativeLayout>
