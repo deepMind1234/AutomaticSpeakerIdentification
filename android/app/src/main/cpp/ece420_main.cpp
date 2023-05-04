@@ -15,6 +15,7 @@
 #define NUM_SAMPLES 8192
 #define FRAME_SIZE 1024
 #define ZP_FACTOR 1024
+#define NUM_COEFFS 13
 
 
 // JNI Function
@@ -24,9 +25,13 @@ Java_com_ece420_lab5_MainActivity_writeNameID(JNIEnv *env, jclass, jint);
 }
 extern "C" {
 JNIEXPORT void JNICALL
-Java_com_ece420_lab5_MainActivity_setFlags(JNIEnv *env, jclass, jint);
+Java_com_ece420_lab5_MainActivity_setFlags(JNIEnv *env, jclass, jint, jint);
 }
 
+extern "C" {
+JNIEXPORT void JNICALL
+Java_com_ece420_lab5_MainActivity_debugLog();
+}
 
 // Student Variables
 #define EPOCH_PEAK_REGION_WIGGLE 30
@@ -49,15 +54,17 @@ int process_flag;  // 0 if training, 1 if identifying
 /* MFCC variables */
 
 // vector of mfcc coefficients per recording. flattened list of all mfcc_coeffs_per_frame
-std::vector<double>mfcc_coeffs_per_recording;
+std::vector<double>mfcc_coeffs_identify;
 // map
 std::map <std::pair<int,int>,std::vector<double>> Recordings;
 
 
 void ece420ProcessFrame(sample_buf *dataBuf) {
+
     // vector of matrix mfcc coefficients for every frame
     std::vector<double>mfcc_coeffs_per_frame;
     __android_log_print(ANDROID_LOG_DEBUG, "ID", "%d", name_ID);
+    __android_log_print(ANDROID_LOG_DEBUG, "Currently on Process: ", "%d", process_flag);
 
     // Keep in mind, we only have 20ms to process each buffer!
     struct timeval start;
@@ -82,7 +89,9 @@ void ece420ProcessFrame(sample_buf *dataBuf) {
     for (int i = 0; i < FRAME_SIZE; i++) {
         bufferIn[i + 2 * FRAME_SIZE - 1] = (float) data[i];
     }
-    /* MFCC calculation ! */
+
+    /* OUR CODE STARTS HERE */
+    /* MFCC calculation !   */
     unsigned int coeff_i;
     double mfcc_result;
     //float audio_data[NUM_SAMPLES];
@@ -104,8 +113,7 @@ void ece420ProcessFrame(sample_buf *dataBuf) {
     };
 
 
-     /*  OUR CODE : */
-    for(coeff_i = 0; coeff_i < 13; coeff_i++)
+    for(coeff_i = 0; coeff_i < NUM_COEFFS; coeff_i++)
         {
             mfcc_result = GetCoefficient(spectrum, 44100, 48, 128, coeff_i);
             mfcc_coeffs_per_frame.push_back(mfcc_result);
@@ -115,20 +123,29 @@ void ece420ProcessFrame(sample_buf *dataBuf) {
 
      __android_log_print(ANDROID_LOG_DEBUG, "# of Coeffs in this frame: ", "%lu", mfcc_coeffs_per_frame.size());
 
-     std::pair<int,int> recordingKey = std::make_pair(name_ID, recording_id);
+     /* only executes if we are training ! */
+    if(process_flag == 0){
+         std::pair<int,int> recordingKey = std::make_pair(name_ID, recording_id);
 
-     //if the key exists, update its mfcc vector
-     if (Recordings.find(recordingKey) != Recordings.end()) {
-        for(coeff_i = 0; coeff_i < 13; coeff_i++)
-            {
-                Recordings[recordingKey].push_back(mfcc_coeffs_per_frame[coeff_i]);
-            }
-     }
-     //otherwise, insert a new key
-     else{
-        Recordings.insert({ recordingKey , mfcc_coeffs_per_frame});
-     }
-
+         //if the key exists, update its mfcc vector
+         if (Recordings.find(recordingKey) != Recordings.end()) {
+            for(coeff_i = 0; coeff_i < NUM_COEFFS; coeff_i++)
+                {
+                    Recordings[recordingKey].push_back(mfcc_coeffs_per_frame[coeff_i]);
+                }
+         }
+         //otherwise, insert a new key
+         else{
+            Recordings.insert({ recordingKey , mfcc_coeffs_per_frame});
+             }
+      }
+       /* only executes if we are identifying ! */
+    else if(process_flag == 1){
+        for(coeff_i = 0; coeff_i < NUM_COEFFS; coeff_i++)
+        {
+            mfcc_coeffs_identify.push_back(mfcc_coeffs_per_frame[coeff_i]);
+        }
+    }
      // if the key is old, update map
     // The whole kit and kaboodle !
 
@@ -144,19 +161,32 @@ Java_com_ece420_lab5_MainActivity_writeNameID(JNIEnv *env, jclass, jint newnamei
     name_ID = (int) newnameid;
     recording_id += 1;
     // clear mfcc vectors
-    mfcc_coeffs_per_recording.clear();
-    for (auto it = Recordings.begin(); it != Recordings.end(); ++it) {
-            __android_log_print(ANDROID_LOG_DEBUG, "Map rn: ", "%i & %i: %lu", (it->first).first, (it->first).second, (it->second).size());
-        }
     return;
 }
 
 JNIEXPORT void JNICALL
-Java_com_ece420_lab5_MainActivity_setFlags(JNIEnv *env, jclass, jint _process_flag) {
+Java_com_ece420_lab5_MainActivity_setFlags(JNIEnv *env, jclass, jint _process_flag, jint _identify_action) {
     process_flag = _process_flag;
+    if(_identify_action == 1){ // when start identifying is pressed
+        mfcc_coeffs_identify.clear();
+        __android_log_print(ANDROID_LOG_DEBUG, "~~~~~~> Clearing identify MFCC vector: ", "%i", _identify_action);
+    }
+    if(_identify_action == -1) // when stop identifying is pressed
+    {
+        __android_log_print(ANDROID_LOG_DEBUG, "~~~~~~> Identify MFCC vector: ", "%i", _identify_action);
+        /* TODO: run inference on this vector */
+        int identity = kNearestNeighbors(mfcc_coeffs_identify, Recordings, 3);
+        __android_log_print(ANDROID_LOG_DEBUG, "~~~~~~> Identify MFCC vector: ", "%i", identity);
+    }
+
 }
-
-
+/* called when stop training is playing */
+JNIEXPORT void JNICALL
+Java_com_ece420_lab5_MainActivity_debugLog(){
+    for (auto it = Recordings.begin(); it != Recordings.end(); ++it) {
+                    __android_log_print(ANDROID_LOG_DEBUG, "~~~~~~> MAP: ", "%i & %i: %lu", (it->first).first, (it->first).second, (it->second).size());
+                }
+}
 
 JNIEXPORT void JNICALL Java_com_example_MyClass_myFunction(JNIEnv* env, jobject obj, jstring inputString) {
     const char* inputCString = env->GetStringUTFChars(inputString, 0);
@@ -164,4 +194,3 @@ JNIEXPORT void JNICALL Java_com_example_MyClass_myFunction(JNIEnv* env, jobject 
     env->ReleaseStringUTFChars(inputString, inputCString);
 
 }
-

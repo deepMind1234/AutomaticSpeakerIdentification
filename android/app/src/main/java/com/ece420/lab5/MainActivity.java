@@ -62,6 +62,8 @@ public class MainActivity extends Activity
 
     /* GLOBAL VARIABLES */
     int process; // flag for what process we are on
+    Boolean isTraining = false;
+    int isIdentify = -1; // represents if we stop(-1)/start(1) identifying
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -161,6 +163,7 @@ public class MainActivity extends Activity
     }
 
     public void onTrainClick(View view) {
+        isTraining = !isTraining ;
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) !=
                                                PackageManager.PERMISSION_GRANTED) {
             statusView.setText(getString(R.string.status_record_perm));
@@ -173,13 +176,19 @@ public class MainActivity extends Activity
         /* pass nameID and random_recording_id to ece420_main.cpp */
         nameID = Integer.parseInt(inputText.getText().toString());
         speakerView.setText("Speaker: " + nameID);
-        writeNameID(nameID);
-        setFlags(0);
+        if(isTraining){
+            writeNameID(nameID);
+            setFlags(0, isIdentify);
+        }
+        else {
+            debugLog(); // print mfcc feature map
+        }
         process = 0;
         startEcho();
     }
 
     public void onIdentifyClick(View view){
+        isIdentify = -1 * isIdentify;
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) !=
                 PackageManager.PERMISSION_GRANTED) {
             statusView.setText(getString(R.string.status_record_perm));
@@ -189,7 +198,7 @@ public class MainActivity extends Activity
                     AUDIO_ECHO_REQUEST);
             return;
         }
-        setFlags(1);
+        setFlags(1, isIdentify);
         process = 1;
         startEcho();
     }
@@ -292,5 +301,8 @@ public class MainActivity extends Activity
 
     public static native void writeNameID(int nameid);
 
-    public static native void setFlags(int process);
+    public static native void setFlags(int process, int identify_action);
+
+    /* for debugging purposes */
+    public static native void debugLog();
 }
