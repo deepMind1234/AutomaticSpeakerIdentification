@@ -30,7 +30,7 @@ Java_com_ece420_lab5_MainActivity_setFlags(JNIEnv *env, jclass, jint, jint);
 
 extern "C" {
 JNIEXPORT void JNICALL
-Java_com_ece420_lab5_MainActivity_debugLog();
+Java_com_ece420_lab5_MainActivity_debugLog(JNIEnv *env, jclass);
 }
 
 // Student Variables
@@ -182,7 +182,7 @@ Java_com_ece420_lab5_MainActivity_setFlags(JNIEnv *env, jclass, jint _process_fl
 }
 /* called when stop training is playing */
 JNIEXPORT void JNICALL
-Java_com_ece420_lab5_MainActivity_debugLog(){
+Java_com_ece420_lab5_MainActivity_debugLog(JNIEnv *env, jclass){
     for (auto it = Recordings.begin(); it != Recordings.end(); ++it) {
                     __android_log_print(ANDROID_LOG_DEBUG, "~~~~~~> MAP: ", "%i & %i: %lu", (it->first).first, (it->first).second, (it->second).size());
                 }
