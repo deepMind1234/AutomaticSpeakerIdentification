@@ -167,11 +167,11 @@ Java_com_ece420_lab5_MainActivity_writeNameID(JNIEnv *env, jclass, jint newnamei
 JNIEXPORT void JNICALL
 Java_com_ece420_lab5_MainActivity_setFlags(JNIEnv *env, jclass, jint _process_flag, jint _identify_action) {
     process_flag = _process_flag;
-    if(_identify_action == 1){ // when start identifying is pressed
+    if(process_flag == 1 && _identify_action == 1){ // when start identifying is pressed
         mfcc_coeffs_identify.clear();
-        __android_log_print(ANDROID_LOG_DEBUG, "~~~~~~> Clearing identify MFCC vector: ", "%i", _identify_action);
+        __android_log_print(ANDROID_LOG_DEBUG, "Clearing previous identify MFCC vector! ", "%i", _identify_action);
     }
-    if(_identify_action == -1) // when stop identifying is pressed
+    if(process_flag == 1 && _identify_action == -1) // when stop identifying is pressed
     {
         __android_log_print(ANDROID_LOG_DEBUG, "~~~~~~> Identify MFCC vector: ", "%i", _identify_action);
         /* TODO: run inference on this vector */
