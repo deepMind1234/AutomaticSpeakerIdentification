@@ -19,3 +19,7 @@ int findClosestInVector(std::vector<int> vector, float value, int minIdx, int ma
 float euclidean_dist(std::vector<float>A , std::vector<float>B);
 float mahalanobis_dist(std::vector<float>A , std::vector<float>B);
 float bhattacharya_dist(std::vector<float>A , std::vector<float>B);
+
+double getEucledianDistance(std::vector<double> A, std::vector<double> B);
+int nearestNeighbor(std::vector<double> A, std::map<std::pair<int, int>, std::vector<double>> Recordings);
+int kNearestNeighbors( std::vector<double> A, std::map<std::pair<int, int>, std::vector<double>> Recordings, int k);

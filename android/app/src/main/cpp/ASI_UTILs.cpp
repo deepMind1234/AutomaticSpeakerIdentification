@@ -119,3 +119,78 @@ double GetCoefficient(double* spectralData, unsigned int samplingRate, unsigned 
 
 	return result;
 }
+
+#include <iostream>
+#include <map>
+#include <math.h>
+#include <vector>
+
+double getEucledianDistance(std::vector<double> A, std::vector<double> B) {
+  std::vector<double> eucledianDistanceV;
+  double eucledianDistance, sum = 0;
+  for (int i = 0; i < A.size(); i++) {
+    double x = pow(A[i] - B[i], 2);
+    eucledianDistanceV.push_back(x);
+  }
+  for (std::vector<double>::iterator it = eucledianDistanceV.begin();
+       it != eucledianDistanceV.end(); ++it)
+    sum += *it;
+  eucledianDistance = pow(sum, 0.5);
+  return eucledianDistance;
+}
+int nearestNeighbor(
+    std::vector<double> A,
+    std::map<std::pair<int, int>, std::vector<double>> Recordings) {
+  double current_min = 10e20;
+  int current_min_id = -1;
+  for (auto it = Recordings.begin(); it != Recordings.end(); ++it) {
+    auto &pair = *it;
+    std::pair<int, int> ids = pair.first;
+    int recorderid = ids.first;
+    //int recordingid = ids.second;
+    std::vector<double> recordingPerPerson = pair.second;
+    double dist = getEucledianDistance(A, recordingPerPerson);
+    if (current_min > dist) {
+      current_min = dist;
+      current_min_id = recorderid;
+    }
+  }
+  return current_min_id;
+}
+
+
+
+int kNearestNeighbors(
+    std::vector<double> A,
+    std::map<std::pair<int, int>, std::vector<double>> Recordings, int k) {
+  std::vector<std::pair<int, double>> distances;
+  for (auto it = Recordings.begin(); it != Recordings.end(); ++it) {
+    auto &pair = *it;
+    std::pair<int, int> ids = pair.first;
+    int recorderid = ids.first;
+    std::vector<double> recordingPerPerson = pair.second;
+    double dist = getEucledianDistance(A, recordingPerPerson);
+    distances.push_back(std::make_pair(recorderid, dist));
+  }
+  std::sort(
+      distances.begin(), distances.end(),
+      [](const std::pair<int, double> &lhs, const std::pair<int, double> &rhs) {
+        return lhs.second < rhs.second;
+      });
+  std::map<int, int> neighbors;
+  for (int i = 0; i < k; i++) {
+    int recorderid = distances[i].first;
+    neighbors[recorderid]++;
+  }
+  int max_count = 0;
+  int max_recorderid = -1;
+  for (auto it = neighbors.begin(); it != neighbors.end(); ++it) {
+    int recorderid = it->first;
+    int count = it->second;
+    if (count > max_count) {
+      max_count = count;
+      max_recorderid = recorderid;
+    }
+  }
+  return max_recorderid;
+}
