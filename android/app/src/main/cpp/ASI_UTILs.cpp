@@ -176,12 +176,14 @@ int kNearestNeighbors(
     int recorderid = ids.first;
     std::vector<double> recordingPerPerson = pair.second;
     double dist = getEucledianDistance(A, recordingPerPerson);
+	double alpha = 0.7;
+	dist = exp(-1*alpha*dist);
     distances.push_back(std::make_pair(recorderid, dist));
   }
   std::sort(
       distances.begin(), distances.end(),
       [](const std::pair<int, double> &lhs, const std::pair<int, double> &rhs) {
-        return lhs.second < rhs.second;
+        return lhs.second > rhs.second;
       });
   std::map<int, int> neighbors;
   for (int i = 0; i < k; i++) {
@@ -200,3 +202,38 @@ int kNearestNeighbors(
   }
   return max_recorderid;
 }
+
+// #include "Eigen/Dense"
+// std::vector<std::vector<double>> getCovarianceMat(std::vector<double> A, std::vector<double> B) {
+//     double mean_A = 0, mean_B = 0;
+//     double sum_A = 0, sum_B = 0, sum_cov = 0;
+//     int n = A.size();  // assuming A and B have the same size
+//     std::vector<std::vector<double>> covariance(n, std::vector<double>(n, 0));
+//     for (int i = 0; i < n; i++) {
+//         sum_A += A[i];
+//         sum_B += B[i];
+//     }
+//     mean_A = sum_A / n;
+//     mean_B = sum_B / n;
+//     for (int i = 0; i < n; i++) {
+//         sum_cov += (A[i] - mean_A) * (B[i] - mean_B);
+//     }
+//     double cov = sum_cov / n;
+//     // fill the covariance matrix
+//     for (int i = 0; i < n; i++) {
+//         covariance[i][i] = cov;
+//     }
+//     return covariance;
+// }
+
+// double getMahanalobisDistance(std::vector<double> A, std::vector<double> B, std::vector<std::vector<double>> cov) {
+//     Eigen::Map<Eigen::VectorXd> eigen_A(A.data(), A.size());
+//     Eigen::Map<Eigen::VectorXd> eigen_B(B.data(), B.size());
+//     Eigen::MatrixXd covariance(A.size(), A.size());
+//     for (int i = 0; i < A.size(); i++) {
+//         covariance.row(i) = Eigen::Map<Eigen::VectorXd>(cov[i].data(), cov[i].size());
+//     }
+//     double squared_dist = (eigen_A - eigen_B).transpose() * covariance.inverse() * (eigen_A - eigen_B);
+//     double MahalanobisDistance = sqrt(squared_dist);
+//     return MahalanobisDistance;
+// }
