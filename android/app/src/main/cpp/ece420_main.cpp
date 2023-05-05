@@ -165,7 +165,7 @@ void ProcessFrame(sample_buf *dataBuf) {
     // The whole kit and kaboodle !
 
     gettimeofday(&end, NULL);
-    LOGD("Time delay: %ld us",  ((end.tv_sec * 1000000 + end.tv_usec) - (start.tv_sec * 1000000 + start.tv_usec)));
+    //LOGD("Time delay: %ld us",  ((end.tv_sec * 1000000 + end.tv_usec) - (start.tv_sec * 1000000 + start.tv_usec)));
 
 }
 
