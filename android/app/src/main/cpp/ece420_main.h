@@ -14,7 +14,7 @@ int detectBufferPeriod(float *buffer);
 void findEpochLocations(std::vector<int> &epochLocations, float *buffer, int periodLen);
 void overlapAddArray(float *dest, float *src, int startIdx, int len);
 bool lab5PitchShift(float *bufferIn);
-void ece420ProcessFrame(sample_buf *dataBuf);
+void ProcessFrame(sample_buf *dataBuf);
 
 
 #endif //ECE420_MAIN_H

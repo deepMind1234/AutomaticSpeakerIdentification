@@ -61,12 +61,10 @@ std::vector<double>mfcc_coeffs_identify;
 std::map <std::pair<int,int>,std::vector<double>> Recordings;
 
 
-void ece420ProcessFrame(sample_buf *dataBuf) {
+void ProcessFrame(sample_buf *dataBuf) {
 
     // vector of matrix mfcc coefficients for every frame
     std::vector<double>mfcc_coeffs_per_frame;
-    __android_log_print(ANDROID_LOG_DEBUG, "ID", "%d", name_ID);
-    __android_log_print(ANDROID_LOG_DEBUG, "Currently on Process: ", "%d", process_flag);
 
     // Keep in mind, we only have 20ms to process each buffer!
     struct timeval start;
@@ -139,8 +137,7 @@ void ece420ProcessFrame(sample_buf *dataBuf) {
             //__android_log_print(ANDROID_LOG_DEBUG, "TRACKERS", "%f", mfcc_result);
         }
 
-        __android_log_print(ANDROID_LOG_DEBUG, "# of Coeffs in this frame: ", "%lu",
-                            mfcc_coeffs_per_frame.size());
+        __android_log_print(ANDROID_LOG_DEBUG, "# of Coeffs in this frame: ", "%lu", mfcc_coeffs_per_frame.size());
 
         /* only executes if we are training ! */
         if (process_flag == 0) {
@@ -188,12 +185,10 @@ Java_com_ece420_lab5_MainActivity_setFlags(JNIEnv *env, jclass, jint _process_fl
     if(process_flag == 1 && _identify_action == 1){ // when start identifying is pressed
         mfcc_coeffs_identify.clear();
         inference = 0;
-        __android_log_print(ANDROID_LOG_DEBUG, "Clearing previous identify MFCC vector! ", "%i", _identify_action);
     }
     if(process_flag == 1 && _identify_action == -1) // when stop identifying is pressed
     {
-        __android_log_print(ANDROID_LOG_DEBUG, "~~~~~~> Stop Identify: ", "%i", _identify_action);
-        /* TODO: run inference on this vector */
+        /* run inference on this vector */
         int identity = kNearestNeighbors(mfcc_coeffs_identify, Recordings, 5);
         __android_log_print(ANDROID_LOG_DEBUG, "~~~~~~> Identify MFCC vector: ", "%i", identity);
         return identity;
