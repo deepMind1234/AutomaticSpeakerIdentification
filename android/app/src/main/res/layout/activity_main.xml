@@ -1,88 +1,81 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F1EEEE"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:background="#5E5E5E"
+    android:padding="16dp"
     tools:context="com.ece420.lab5.MainActivity">
-
-    <Button
-        android:id="@+id/train_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="297dp"
-        android:onClick="onTrainClick"
-        android:text="@string/StartTrain" />
-
-    <Button
-        android:id="@+id/identify_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginEnd="114dp"
-        android:layout_marginBottom="159dp"
-        android:onClick="onIdentifyClick"
-        android:text="@string/StartIdentify" />
-
-    <TextView
-        android:id="@+id/statusView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="50dp"
-        android:layout_marginBottom="270dp"
-        android:lines="3"
-        android:text="@string/init_status" />
 
     <TextView
         android:id="@+id/PageTitle_View"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="38dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="32dp"
         android:text="@string/TrainPage"
-        android:textAppearance="@android:style/TextAppearance.Material.Large" />
-
-    <EditText
-        android:id="@+id/inputText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerInParent="true"
-        android:layout_marginTop="186dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text=""
-        android:textSize="50dp" />
+        android:textColor="#FFFFFF"
+        android:textSize="24sp" />
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerInParent="true"
-        android:layout_marginTop="100dp"
-        android:text="Enter speaker #: "
-        android:textSize="40dp" />
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="64dp"
+        android:text="Enter speaker #:"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp" />
+
+
+    <EditText
+        android:id="@+id/inputText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:background="#FFFFFF"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text=""
+        android:textColor="#000000"
+        android:textSize="24sp" />
+
+    <Button
+        android:id="@+id/train_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:background="#4CAF50"
+        android:onClick="onTrainClick"
+        android:text="@string/StartTrain"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp" />
+
+    <Button
+        android:id="@+id/identify_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:background="#2196F3"
+        android:text="@string/StartIdentify"
+        android:textColor="#FFFFFF"
+        android:onClick="onIdentifyClick"/>
 
     <TextView
         android:id="@+id/inferenceView"
         android:layout_width="154dp"
         android:layout_height="65dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginStart="121dp"
-        android:layout_marginBottom="29dp"
+        android:layout_marginStart="140dp"
+        android:layout_marginBottom="72dp"
         android:text="@string/disclaimer" />
 
-</RelativeLayout>
+    <TextView
+        android:id="@+id/statusView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
+        android:layout_marginBottom="270dp"
+        android:lines="3"
+        android:text="@string/init_status" />
 
+</LinearLayout>

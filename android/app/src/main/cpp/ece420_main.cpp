@@ -134,10 +134,10 @@ void ProcessFrame(sample_buf *dataBuf) {
             mfcc_result = GetCoefficient(spectrum, 44100, 48, 128, coeff_i);
             mfcc_coeffs_per_frame.push_back(mfcc_result);
             printf("%i %f\n", coeff_i, mfcc_result);
-            //__android_log_print(ANDROID_LOG_DEBUG, "TRACKERS", "%f", mfcc_result);
+            __android_log_print(ANDROID_LOG_DEBUG, "TRACKERS", "%f", mfcc_result);
         }
 
-        __android_log_print(ANDROID_LOG_DEBUG, "# of Coeffs in this frame: ", "%lu", mfcc_coeffs_per_frame.size());
+        // __android_log_print(ANDROID_LOG_DEBUG, "# of Coeffs in this frame: ", "%lu", mfcc_coeffs_per_frame.size());
 
         /* only executes if we are training ! */
         if (process_flag == 0) {
@@ -189,7 +189,7 @@ Java_com_ece420_lab5_MainActivity_setFlags(JNIEnv *env, jclass, jint _process_fl
     if(process_flag == 1 && _identify_action == -1) // when stop identifying is pressed
     {
         /* run inference on this vector */
-        int identity = kNearestNeighbors(mfcc_coeffs_identify, Recordings, 5);
+        int identity = kNearestNeighbors(mfcc_coeffs_identify, Recordings, 3);
         __android_log_print(ANDROID_LOG_DEBUG, "~~~~~~> Identify MFCC vector: ", "%i", identity);
         return identity;
     }
