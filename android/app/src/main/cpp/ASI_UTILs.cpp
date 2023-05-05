@@ -128,7 +128,13 @@ double GetCoefficient(double* spectralData, unsigned int samplingRate, unsigned 
 double getEucledianDistance(std::vector<double> A, std::vector<double> B) {
   std::vector<double> eucledianDistanceV;
   double eucledianDistance, sum = 0;
-  for (int i = 0; i < A.size(); i++) {
+  int size = 0;
+  if (A.size() <= B.size()){
+	  size = A.size();
+  }else{
+	  size = B.size();
+  }
+  for (int i = 0; i < size; i++) {
     double x = pow(A[i] - B[i], 2);
     eucledianDistanceV.push_back(x);
   }
