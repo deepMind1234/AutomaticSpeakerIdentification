@@ -191,7 +191,7 @@ Java_com_ece420_lab5_MainActivity_setFlags(JNIEnv *env, jclass, jint _process_fl
     {
         __android_log_print(ANDROID_LOG_DEBUG, "~~~~~~> Stop Identify: ", "%i", _identify_action);
         /* TODO: run inference on this vector */
-        int identity = kNearestNeighbors(mfcc_coeffs_identify, Recordings, 1);
+        int identity = kNearestNeighbors(mfcc_coeffs_identify, Recordings, 5);
         __android_log_print(ANDROID_LOG_DEBUG, "~~~~~~> Identify MFCC vector: ", "%i", identity);
     }
 
