@@ -24,7 +24,7 @@ JNIEXPORT void JNICALL
 Java_com_ece420_lab5_MainActivity_writeNameID(JNIEnv *env, jclass, jint);
 }
 extern "C" {
-JNIEXPORT void JNICALL
+JNIEXPORT jint JNICALL
 Java_com_ece420_lab5_MainActivity_setFlags(JNIEnv *env, jclass, jint, jint);
 }
 
@@ -32,6 +32,7 @@ extern "C" {
 JNIEXPORT void JNICALL
 Java_com_ece420_lab5_MainActivity_debugLog(JNIEnv *env, jclass);
 }
+
 
 // Student Variables
 #define EPOCH_PEAK_REGION_WIGGLE 30
@@ -50,6 +51,7 @@ int FREQ_NEW = 300;
 int name_ID = 0;
 int recording_id = 0;
 int process_flag;  // 0 if training, 1 if identifying
+int inference;
 
 /* MFCC variables */
 
@@ -175,11 +177,12 @@ Java_com_ece420_lab5_MainActivity_writeNameID(JNIEnv *env, jclass, jint newnamei
     return;
 }
 
-JNIEXPORT void JNICALL
+JNIEXPORT jint JNICALL
 Java_com_ece420_lab5_MainActivity_setFlags(JNIEnv *env, jclass, jint _process_flag, jint _identify_action) {
     process_flag = _process_flag;
     if(process_flag == 1 && _identify_action == 1){ // when start identifying is pressed
         mfcc_coeffs_identify.clear();
+        inference = 0;
         __android_log_print(ANDROID_LOG_DEBUG, "Clearing previous identify MFCC vector! ", "%i", _identify_action);
     }
     if(process_flag == 1 && _identify_action == -1) // when stop identifying is pressed
@@ -188,8 +191,9 @@ Java_com_ece420_lab5_MainActivity_setFlags(JNIEnv *env, jclass, jint _process_fl
         /* TODO: run inference on this vector */
         int identity = kNearestNeighbors(mfcc_coeffs_identify, Recordings, 3);
         __android_log_print(ANDROID_LOG_DEBUG, "~~~~~~> Identify MFCC vector: ", "%i", identity);
+        return identity;
     }
-
+    return -1 ;
 }
 /* called when stop training is playing */
 JNIEXPORT void JNICALL

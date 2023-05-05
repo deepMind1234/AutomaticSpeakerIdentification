@@ -47,7 +47,7 @@ public class MainActivity extends Activity
     TextView statusView;
     TextView page_title_view;
     TextView textView;
-    TextView speakerView;
+    //TextView speakerView;
     EditText inputText;
     String  nativeSampleRate;
     String  nativeSampleBufSize;
@@ -55,15 +55,18 @@ public class MainActivity extends Activity
     boolean supportRecording;
     Boolean isPlaying = false;
 
+    TextView inferenceView;
+
     // Static Values
     private static final int AUDIO_ECHO_REQUEST = 0;
     private static final int FRAME_SIZE = 1024;
     private static final int MIN_FREQ = 50;
 
     /* GLOBAL VARIABLES */
-    int process; // flag for what process we are on
+    int process; // flag for what process we are on, 0 for train, 1 for identify
     Boolean isTraining = false;
     int isIdentify = -1; // represents if we stop(-1)/start(1) identifying
+    int inference = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,7 +80,8 @@ public class MainActivity extends Activity
         identifyButton = (Button)findViewById((R.id.identify_button));
         textView = (TextView)findViewById((R.id.textView));
         inputText = (EditText)findViewById((R.id.inputText));
-        speakerView = (TextView)findViewById(R.id.speakerView);
+        //speakerView = (TextView)findViewById(R.id.speakerView);
+        inferenceView = (TextView)findViewById(R.id.inferenceView);
 
         /* initialize native audio system */
         queryNativeAudioParameters();
@@ -175,8 +179,8 @@ public class MainActivity extends Activity
         }
         /* pass nameID and random_recording_id to ece420_main.cpp */
         nameID = Integer.parseInt(inputText.getText().toString());
-        speakerView.setText("Speaker: " + nameID);
         if(isTraining){
+            inferenceView.setText(getString(R.string.disclaimer));
             writeNameID(nameID);
             setFlags(0, isIdentify);
         }
@@ -198,7 +202,14 @@ public class MainActivity extends Activity
                     AUDIO_ECHO_REQUEST);
             return;
         }
-        setFlags(1, isIdentify);
+
+        if(isIdentify == -1){
+            inference = setFlags(1, isIdentify);
+            inferenceView.setText("Guess: "+ inference);
+        }
+        else{
+            inferenceView.setText(getString(R.string.disclaimer));
+        }
         process = 1;
         startEcho();
     }
@@ -301,7 +312,7 @@ public class MainActivity extends Activity
 
     public static native void writeNameID(int nameid);
 
-    public static native void setFlags(int process, int identify_action);
+    public static native int setFlags(int process, int identify_action);
 
     /* for debugging purposes */
     public static native void debugLog();
