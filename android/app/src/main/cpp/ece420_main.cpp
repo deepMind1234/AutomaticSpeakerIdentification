@@ -92,18 +92,23 @@ void ece420ProcessFrame(sample_buf *dataBuf) {
 
     /* OUR CODE STARTS HERE */
     // Determine whether the input is voiced or unvoiced
-
+    bool voiced = false;
 
     int energy = 0;
     for (int i = 0; i < FRAME_SIZE; i++)
     {
         energy = energy + (abs(bufferIn[i]) * abs(bufferIn[i]));
+        if (energy > 50000000)
+        {
+            voiced = true;
+            break;
+        }
     }
-    __android_log_print(ANDROID_LOG_DEBUG, "~~~~~~> Energy: ", "%i", energy);
 
     /* MFCC calculation !   */
 
-    if(energy > 8000) {
+    if(voiced) {
+        __android_log_print(ANDROID_LOG_DEBUG, "~~~~~~> Voiced energy: ", "%i", energy);
         unsigned int coeff_i;
         double mfcc_result;
         //float audio_data[NUM_SAMPLES];
@@ -184,9 +189,9 @@ Java_com_ece420_lab5_MainActivity_setFlags(JNIEnv *env, jclass, jint _process_fl
     }
     if(process_flag == 1 && _identify_action == -1) // when stop identifying is pressed
     {
-        __android_log_print(ANDROID_LOG_DEBUG, "~~~~~~> Identify MFCC vector: ", "%i", _identify_action);
+        __android_log_print(ANDROID_LOG_DEBUG, "~~~~~~> Stop Identify: ", "%i", _identify_action);
         /* TODO: run inference on this vector */
-        int identity = kNearestNeighbors(mfcc_coeffs_identify, Recordings, 3);
+        int identity = kNearestNeighbors(mfcc_coeffs_identify, Recordings, 1);
         __android_log_print(ANDROID_LOG_DEBUG, "~~~~~~> Identify MFCC vector: ", "%i", identity);
     }
 
