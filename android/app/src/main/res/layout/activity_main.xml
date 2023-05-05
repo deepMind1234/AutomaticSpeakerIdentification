@@ -63,11 +63,13 @@
 
     <TextView
         android:id="@+id/inferenceView"
-        android:layout_width="154dp"
-        android:layout_height="65dp"
+        android:layout_width="201dp"
+        android:layout_height="167dp"
         android:layout_marginStart="140dp"
         android:layout_marginBottom="72dp"
-        android:text="@string/disclaimer" />
+        android:text="@string/disclaimer"
+        android:textColor="#FFFFFF"
+        android:textSize="24sp" />
 
     <TextView
         android:id="@+id/statusView"
