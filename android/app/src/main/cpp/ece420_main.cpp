@@ -91,59 +91,70 @@ void ece420ProcessFrame(sample_buf *dataBuf) {
     }
 
     /* OUR CODE STARTS HERE */
-    /* MFCC calculation !   */
-    unsigned int coeff_i;
-    double mfcc_result;
-    //float audio_data[NUM_SAMPLES];
-    kiss_fft_cpx fft_input[NUM_SAMPLES];
-    kiss_fft_cpx fft_output[NUM_SAMPLES];
-    double spectrum[NUM_SAMPLES];
+    // Determine whether the input is voiced or unvoiced
 
-    for (int i = 0; i < NUM_SAMPLES; i++) {
-        fft_input[i].r = dataBuf->buf_[i];
-        fft_input[i].i = 0;
-        printf("%f \n",fft_input[i].r);
+
+    int energy = 0;
+    for (int i = 0; i < FRAME_SIZE; i++)
+    {
+        energy = energy + (abs(bufferIn[i]) * abs(bufferIn[i]));
     }
+    __android_log_print(ANDROID_LOG_DEBUG, "~~~~~~> Energy: ", "%i", energy);
 
-    kiss_fft_cfg cfg = kiss_fft_alloc(NUM_SAMPLES,0,NULL,NULL);
-    kiss_fft(cfg,fft_input,fft_output); // perform fft using the kissfft cfg ds
+    /* MFCC calculation !   */
 
-    for (int i = 0; i < NUM_SAMPLES; i++) {
-        spectrum[i] = (double) fft_output[i].r;
-    };
+    if(energy > 8000) {
+        unsigned int coeff_i;
+        double mfcc_result;
+        //float audio_data[NUM_SAMPLES];
+        kiss_fft_cpx fft_input[NUM_SAMPLES];
+        kiss_fft_cpx fft_output[NUM_SAMPLES];
+        double spectrum[NUM_SAMPLES];
+
+        for (int i = 0; i < NUM_SAMPLES; i++) {
+            fft_input[i].r = dataBuf->buf_[i];
+            fft_input[i].i = 0;
+            printf("%f \n", fft_input[i].r);
+        }
+
+        kiss_fft_cfg cfg = kiss_fft_alloc(NUM_SAMPLES, 0, NULL, NULL);
+        kiss_fft(cfg, fft_input, fft_output); // perform fft using the kissfft cfg ds
+
+        for (int i = 0; i < NUM_SAMPLES; i++) {
+            spectrum[i] = (double) fft_output[i].r;
+        };
 
 
-    for(coeff_i = 0; coeff_i < NUM_COEFFS; coeff_i++)
-        {
+        for (coeff_i = 0; coeff_i < NUM_COEFFS; coeff_i++) {
             mfcc_result = GetCoefficient(spectrum, 44100, 48, 128, coeff_i);
             mfcc_coeffs_per_frame.push_back(mfcc_result);
             printf("%i %f\n", coeff_i, mfcc_result);
             //__android_log_print(ANDROID_LOG_DEBUG, "TRACKERS", "%f", mfcc_result);
-    }
+        }
 
-     __android_log_print(ANDROID_LOG_DEBUG, "# of Coeffs in this frame: ", "%lu", mfcc_coeffs_per_frame.size());
+        __android_log_print(ANDROID_LOG_DEBUG, "# of Coeffs in this frame: ", "%lu",
+                            mfcc_coeffs_per_frame.size());
 
-     /* only executes if we are training ! */
-    if(process_flag == 0){
-         std::pair<int,int> recordingKey = std::make_pair(name_ID, recording_id);
+        /* only executes if we are training ! */
+        if (process_flag == 0) {
+            std::pair<int, int> recordingKey = std::make_pair(name_ID, recording_id);
 
-         //if the key exists, update its mfcc vector
-         if (Recordings.find(recordingKey) != Recordings.end()) {
-            for(coeff_i = 0; coeff_i < NUM_COEFFS; coeff_i++)
-                {
+            //if the key exists, update its mfcc vector
+            if (Recordings.find(recordingKey) != Recordings.end()) {
+                for (coeff_i = 0; coeff_i < NUM_COEFFS; coeff_i++) {
                     Recordings[recordingKey].push_back(mfcc_coeffs_per_frame[coeff_i]);
                 }
-         }
-         //otherwise, insert a new key
-         else{
-            Recordings.insert({ recordingKey , mfcc_coeffs_per_frame});
-             }
-      }
-       /* only executes if we are identifying ! */
-    else if(process_flag == 1){
-        for(coeff_i = 0; coeff_i < NUM_COEFFS; coeff_i++)
-        {
-            mfcc_coeffs_identify.push_back(mfcc_coeffs_per_frame[coeff_i]);
+            }
+                //otherwise, insert a new key
+            else {
+                Recordings.insert({recordingKey, mfcc_coeffs_per_frame});
+            }
+        }
+            /* only executes if we are identifying ! */
+        else if (process_flag == 1) {
+            for (coeff_i = 0; coeff_i < NUM_COEFFS; coeff_i++) {
+                mfcc_coeffs_identify.push_back(mfcc_coeffs_per_frame[coeff_i]);
+            }
         }
     }
      // if the key is old, update map
