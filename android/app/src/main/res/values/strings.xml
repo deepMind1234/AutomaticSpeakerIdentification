@@ -17,5 +17,6 @@
 
     <string name="StartIdentify">Start Identifying</string>>
     <string name="StopIdentify">Stop Identifying</string>>
-    <string name="TrainPage">Training and Identification Page </string>>
+    <string name="TrainPage">Automatic Speaker Identification</string>>
+    <string name = "disclaimer">Train at least 3 samples per person for best results.</string>>
 </resources>

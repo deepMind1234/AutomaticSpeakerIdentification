@@ -38,7 +38,7 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentBottom="true"
         android:layout_marginStart="50dp"
-        android:layout_marginBottom="45dp"
+        android:layout_marginBottom="270dp"
         android:lines="3"
         android:text="@string/init_status" />
 
@@ -70,18 +70,19 @@
         android:layout_alignParentTop="true"
         android:layout_centerInParent="true"
         android:layout_marginTop="100dp"
-        android:text="Enter speaker #"
+        android:text="Enter speaker #: "
         android:textSize="40dp" />
 
     <TextView
-        android:id="@+id/speakerView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/inferenceView"
+        android:layout_width="154dp"
+        android:layout_height="65dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginStart="41dp"
-        android:layout_marginBottom="252dp"
-        android:text="Speaker: " />
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="121dp"
+        android:layout_marginBottom="29dp"
+        android:text="@string/disclaimer" />
 
 </RelativeLayout>
 
