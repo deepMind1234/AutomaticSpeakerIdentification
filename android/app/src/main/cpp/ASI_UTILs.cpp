@@ -1,124 +1,109 @@
 #include "ASI_UTILS.h"
 
-double GetCenterFrequency(unsigned int filterBand)
+double calculate_center_frequency(unsigned int filter_band) {
+    double center_frequency = 0.0;
+    double exp_value;
+
+    if (filter_band == 0) {
+        center_frequency = 0.0;
+    }
+    else if (filter_band >= 1 && filter_band <= 14) {
+        center_frequency = (200.0 * filter_band) / 3.0;
+    }
+    else {
+        exp_value = filter_band - 14.0;
+        center_frequency = pow(1.0711703, exp_value) * 1073.4;
+    }
+
+    return center_frequency;
+}
+
+double calculate_magnitude_factor(unsigned int filter_band) {
+    double magnitude_factor = 0.0;
+
+    if (filter_band >= 1 && filter_band <= 14) {
+        magnitude_factor = 0.015;
+    }
+    else if (filter_band >= 15 && filter_band <= 48) {
+        double prev_center_frequency = calculate_center_frequency(filter_band - 1);
+        double next_center_frequency = calculate_center_frequency(filter_band + 1);
+        magnitude_factor = 2.0 / (next_center_frequency - prev_center_frequency);
+    }
+
+    return magnitude_factor;
+}
+
+double calculate_filter_parameter(unsigned int sampling_rate, unsigned int bin_size, unsigned int frequency_band, unsigned int filter_band) {
+    double filter_parameter = 0.0;
+
+    double boundary = (frequency_band * sampling_rate) / bin_size;
+    double prev_center_frequency = calculate_center_frequency(filter_band - 1);
+    double this_center_frequency = calculate_center_frequency(filter_band);
+    double next_center_frequency = calculate_center_frequency(filter_band + 1);
+
+    if (boundary >= 0 && boundary < prev_center_frequency) {
+        filter_parameter = 0.0;
+    }
+    else if (boundary >= prev_center_frequency && boundary < this_center_frequency) {
+        double numerator = boundary - prev_center_frequency;
+        double denominator = this_center_frequency - prev_center_frequency;
+        filter_parameter = numerator / denominator;
+        filter_parameter *= calculate_magnitude_factor(filter_band);
+    }
+    else if (boundary >= this_center_frequency && boundary < next_center_frequency) {
+        double numerator = boundary - next_center_frequency;
+        double denominator = this_center_frequency - next_center_frequency;
+        filter_parameter = numerator / denominator;
+        filter_parameter *= calculate_magnitude_factor(filter_band);
+    }
+    else if (boundary >= next_center_frequency && boundary < sampling_rate) {
+        filter_parameter = 0.0;
+    }
+
+    return filter_parameter;
+}
+
+double ComputeNormalizationFactor(int numFilters, int m)
 {
-	double centerFrequency = 0.0f;
-	double exponent;
-
-	if(filterBand == 0){
-		centerFrequency = 0;
-	}
-	else if(filterBand >= 1 && filterBand <= 14){
-		centerFrequency = (200.0f * filterBand) / 3.0f;
-	}
-	else{
-		exponent = filterBand - 14.0f;
-		centerFrequency = pow(1.0711703, exponent);
-		centerFrequency *= 1073.4;
-	}
-
-	return centerFrequency;
+    double normalizationFactor = (m == 0) ? sqrt(1.0 / numFilters) : sqrt(2.0 / numFilters);
+    return normalizationFactor;
 }
 
-double GetMagnitudeFactor(unsigned int filterBand){
-	double magnitudeFactor = 0.0f;
-
-	if(filterBand >= 1 && filterBand <= 14){
-		magnitudeFactor = 0.015;
-	}
-	else if(filterBand >= 15 && filterBand <= 48){
-		magnitudeFactor = 2.0f / (GetCenterFrequency(filterBand + 1) - GetCenterFrequency(filterBand -1));
-	}
-
-	return magnitudeFactor;
-}
-
-double GetFilterParameter(unsigned int samplingRate, unsigned int binSize, unsigned int frequencyBand, unsigned int filterBand)
+double ComputeFilterBankCoefficient(double* spectralData, unsigned int samplingRate, unsigned int numFilters, unsigned int binSize, unsigned int m)
 {
-	double filterParameter = 0.0f;
+    double filterBankCoefficient = 0.0;
+    double normalizationFactor = ComputeNormalizationFactor(numFilters, m);
+    double outerSum = 0.0;
 
-	double boundary = (frequencyBand * samplingRate) / binSize;		// k * Fs / N
-	double prevCenterFrequency = GetCenterFrequency(filterBand - 1);		// fc(l - 1) etc.
-	double thisCenterFrequency = GetCenterFrequency(filterBand);
-	double nextCenterFrequency = GetCenterFrequency(filterBand + 1);
+    if(m >= numFilters)
+    {
+        return filterBankCoefficient; // undefined behavior
+    }
 
-	if(boundary >= 0 && boundary < prevCenterFrequency)
-	{
-		filterParameter = 0.0f;
-	}
-	else if(boundary >= prevCenterFrequency && boundary < thisCenterFrequency)
-	{
-		filterParameter = (boundary - prevCenterFrequency) / (thisCenterFrequency - prevCenterFrequency);
-		filterParameter *= GetMagnitudeFactor(filterBand);
-	}
-	else if(boundary >= thisCenterFrequency && boundary < nextCenterFrequency)
-	{
-		filterParameter = (boundary - nextCenterFrequency) / (thisCenterFrequency - nextCenterFrequency);
-		filterParameter *= GetMagnitudeFactor(filterBand);
-	}
-	else if(boundary >= nextCenterFrequency && boundary < samplingRate)
-	{
-		filterParameter = 0.0f;
-	}
+    for(unsigned int l = 1; l <= numFilters; l++)
+    {
+        double innerSum = 0.0;
 
-	return filterParameter;
+        for(unsigned int k = 0; k < binSize - 1; k++)
+        {
+            double filterParameter = GetFilterParameter(samplingRate, binSize, k, l);
+            innerSum += fabs(spectralData[k] * filterParameter);
+        }
+
+        if(innerSum > 0.0)
+        {
+            innerSum = log(innerSum);
+        }
+
+        double cosineFactor = cos(((m * M_PI) / numFilters) * (l - 0.5));
+        innerSum *= cosineFactor;
+        outerSum += innerSum;
+    }
+
+    filterBankCoefficient = normalizationFactor * outerSum;
+    return filterBankCoefficient;
 }
 
-double NormalizationFactor(int NumFilters, int m)
-{
-	double normalizationFactor = 0.0f;
-
-	if(m == 0)
-	{
-		normalizationFactor = sqrt(1.0f / NumFilters);
-	}
-	else
-	{
-		normalizationFactor = sqrt(2.0f / NumFilters);
-	}
-
-	return normalizationFactor;
-}
-double GetCoefficient(double* spectralData, unsigned int samplingRate, unsigned int NumFilters, unsigned int binSize, unsigned int m)
-{
-	double result = 0.0f;
-	double outerSum = 0.0f;
-	double innerSum = 0.0f;
-	unsigned int k, l;
-
-	// 0 <= m < L
-	if(m >= NumFilters)
-	{
-		// This represents an error condition - the specified coefficient is greater than or equal to the number of filters. The behavior in this case is undefined.
-		return 0.0f;
-	}
-
-	result = NormalizationFactor(NumFilters, m);
-
-
-	for(l = 1; l <= NumFilters; l++)
-	{
-		// Compute inner sum
-		innerSum = 0.0f;
-		for(k = 0; k < binSize - 1; k++)
-		{
-			innerSum += fabs(spectralData[k] * GetFilterParameter(samplingRate, binSize, k, l));
-		}
-
-		if(innerSum > 0.0f)
-		{
-			innerSum = log(innerSum); // The log of 0 is undefined, so don't use it
-		}
-
-		innerSum = innerSum * cos(((m * M_PI) / NumFilters) * (l - 0.5f));
-
-		outerSum += innerSum;
-	}
-
-	result *= outerSum;
-
-	return result;
-}
 
 #include <iostream>
 #include <map>

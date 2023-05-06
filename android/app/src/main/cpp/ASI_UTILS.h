@@ -3,11 +3,11 @@
 #include <map>
 #include <algorithm>
 
-double GetCoefficient(double* spectralData, unsigned int samplingRate, unsigned int NumFilters, unsigned int binSize, unsigned int m);
-double NormalizationFactor(int NumFilters, int m);
-double GetCenterFrequency(unsigned int filterBand);
-double GetMagnitudeFactor(unsigned int filterBand);
-double GetFilterParameter(unsigned int samplingRate, unsigned int binSize, unsigned int frequencyBand, unsigned int filterBand);
+double ComputeFilterBankCoefficient(double* spectralData, unsigned int samplingRate, unsigned int NumFilters, unsigned int binSize, unsigned int m);
+double ComputeNormalizationFactor(int NumFilters, int m);
+double calculate_center_frequency(unsigned int filterBand);
+double calculate_magnitude_factor(unsigned int filterBand);
+double calculate_filter_parameter(unsigned int samplingRate, unsigned int binSize, unsigned int frequencyBand, unsigned int filterBand);
 
  
 
